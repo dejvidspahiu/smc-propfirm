@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>SMC Prop Firm | Trade our capital, keep your profits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0c1b;--bg2:#0f1228;--card:#141836;--card2:#1a1f45;--bd:#252b58;
+  --tx:#eef0ff;--mut:#98a0cb;--p:#7c5cff;--p2:#6a4af0;--soft:rgba(124,92,255,.14);
+  --ok:#22d3a6;--warn:#f5b84b;--bad:#ff6b81;--glow:rgba(124,92,255,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.logo,.num-lg{font-family:'Sora','Manrope',sans-serif}
+a{color:inherit}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--p);outline-offset:2px}
+.ico{width:1.2em;height:1.2em;vertical-align:-.17em;display:inline-block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 5%}
+.hidden{display:none!important}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:10px;font-weight:700;font-size:.95rem;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
+.btn-p{background:var(--p);color:#fff;box-shadow:0 8px 24px var(--glow)}
+.btn-p:hover{background:var(--p2);transform:translateY(-1px)}
+.btn-g{background:transparent;color:var(--tx);border-color:var(--bd)}
+.btn-g:hover{border-color:var(--p);color:#fff}
+.btn-sm{padding:8px 16px;font-size:.85rem;border-radius:8px}
+.btn[disabled]{opacity:.6;cursor:wait}
+
+/* promo + header */
+.promo{background:linear-gradient(90deg,#4b2fc9,#7c5cff);text-align:center;padding:8px 16px;font-size:.85rem;font-weight:600}
+header.site{position:sticky;top:0;z-index:100;background:rgba(10,12,27,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.3rem;text-decoration:none;white-space:nowrap}
+.logo em{font-style:normal;color:var(--p)}
+.nav{display:flex;gap:28px;list-style:none}
+.nav a{text-decoration:none;color:var(--mut);font-weight:600;font-size:.93rem;transition:color .15s}
+.nav a:hover{color:#fff}
+.hdr-actions{display:flex;align-items:center;gap:12px}
+.hdr-user{font-size:.85rem;color:var(--mut);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.link-btn{background:none;border:none;color:var(--tx);font-weight:700;font-size:.93rem;cursor:pointer}
+.link-btn:hover{color:var(--p)}
+
+/* hero */
+.hero{padding:84px 0 70px;background:radial-gradient(900px 420px at 80% -10%,rgba(124,92,255,.28),transparent 70%),radial-gradient(600px 300px at 0% 30%,rgba(34,211,166,.08),transparent 70%)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.pill{display:inline-block;background:var(--soft);color:#b9a8ff;font-weight:700;font-size:.82rem;padding:6px 14px;border-radius:999px;margin-bottom:20px;border:1px solid rgba(124,92,255,.35)}
+.hero h1{font-size:3.5rem;line-height:1.08;font-weight:800;letter-spacing:-.02em;margin-bottom:20px}
+.hero p.lead{color:var(--mut);font-size:1.1rem;max-width:520px;margin-bottom:30px}
+.hero .btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-points{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:var(--mut);font-size:.88rem;font-weight:600}
+.hero-points span{display:flex;align-items:center;gap:8px}
+.hero-points .ico{color:var(--ok)}
+.acct-card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--bd);border-radius:20px;padding:26px;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.acct-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.acct-top b{font-size:.95rem}
+.tag{font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--soft);color:#b9a8ff}
+.tag.ok{background:rgba(34,211,166,.14);color:var(--ok)}
+.tag.warn{background:rgba(245,184,75,.14);color:var(--warn)}
+.tag.bad{background:rgba(255,107,129,.14);color:var(--bad)}
+.acct-size{font-family:'Sora';font-size:2.6rem;font-weight:800;margin-bottom:4px}
+.acct-sub{color:var(--mut);font-size:.88rem;margin-bottom:22px}
+.bar{height:8px;background:#0c0f26;border-radius:99px;overflow:hidden;margin:8px 0 18px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--ok));border-radius:99px}
+.kv{display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid var(--bd);font-size:.92rem;color:var(--mut)}
+.kv b{color:var(--tx)}
+
+/* stats */
+.stats{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-top:34px;padding-bottom:34px;text-align:center}
+.stats b{display:block;font-family:'Sora';font-size:2rem;font-weight:800}
+.stats span{font-size:.88rem;color:var(--mut)}
+
+/* sections */
+section.s{padding:90px 0}
+section.alt{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.sec-title{text-align:center;max-width:640px;margin:0 auto 46px}
+.sec-title h2{font-size:2.4rem;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.sec-title p{color:var(--mut);margin-top:12px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:28px}
+.box .ic{width:46px;height:46px;border-radius:12px;background:var(--soft);color:#b9a8ff;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.3rem}
+.box h3{font-size:1.1rem;margin-bottom:8px}
+.box p{color:var(--mut);font-size:.94rem}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative}
+.step{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:26px}
+.step .n{width:38px;height:38px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:14px}
+.step h3{font-size:1.05rem;margin-bottom:6px}
+.step p{color:var(--mut);font-size:.9rem}
+
+/* picker */
+.picker{max-width:1100px;margin:0 auto}
+.prog-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:14px}
+.prog{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px 22px;text-align:left;cursor:pointer;color:var(--tx);transition:border-color .15s,background .15s}
+.prog:hover{border-color:#4a4f99}
+.prog.on{border-color:var(--p);background:linear-gradient(160deg,#1d1f52,#161a40);box-shadow:0 0 0 1px var(--p)}
+.prog b{display:block;font-family:'Sora';font-size:1.25rem;margin-bottom:6px}
+.prog span{color:var(--mut);font-size:.85rem}
+.size-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.size{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 20px;text-align:left;cursor:pointer;color:var(--tx);position:relative;transition:border-color .15s}
+.size:hover{border-color:#4a4f99}
+.size.on{border-color:var(--p);background:linear-gradient(160deg,#1d1f52,#161a40);box-shadow:0 0 0 1px var(--p)}
+.size small{display:block;color:var(--mut);font-size:.78rem;font-weight:600}
+.size .big{display:block;font-family:'Sora';font-size:1.9rem;font-weight:800;line-height:1.2;margin:2px 0 8px}
+.size .big sup{font-size:.9rem;font-weight:700;margin-right:2px;vertical-align:top;position:relative;top:.35em}
+.size .pc{color:var(--ok);font-weight:800;font-size:.95rem}
+.size i{position:absolute;top:10px;right:12px;background:var(--ok);color:#06231b;font-size:.62rem;font-style:normal;font-weight:800;padding:2px 7px;border-radius:5px}
+.detail{background:linear-gradient(160deg,#161a40,#10132f);border:1px solid var(--bd);border-radius:18px;padding:22px}
+.dtools{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-bottom:18px;font-weight:600;font-size:.92rem}
+.switch{display:flex;align-items:center;gap:10px;background:none;border:none;color:var(--tx);font-weight:700;font-size:.92rem;cursor:pointer}
+.switch .tr{width:34px;height:20px;border-radius:99px;background:#3a3f78;position:relative;transition:background .15s}
+.switch .tr::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .15s}
+.switch.on .tr{background:var(--p)}
+.switch.on .tr::after{transform:translateX(14px)}
+.dgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.rbox{background:rgba(8,10,28,.55);border:1px solid var(--bd);border-radius:14px;padding:20px 22px}
+.rbox h4{font-size:.88rem;color:var(--mut);font-weight:600;margin-bottom:12px}
+.rl{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;font-size:.9rem}
+.rl span{display:flex;align-items:center;gap:10px;color:var(--mut)}
+.rl span .ico{width:1em;height:1em;opacity:.7}
+.rl b{font-weight:600;color:var(--tx);text-align:right}
+.sumbox{padding:6px 4px 0}
+.sumbox h3{font-size:1.1rem;margin-bottom:6px}
+.sumbox .pr{font-family:'Sora';font-size:2rem;font-weight:800;color:var(--ok);margin-bottom:16px}
+.sumbox .ql{font-size:.78rem;color:var(--mut);font-weight:700;letter-spacing:.04em;margin-bottom:10px}
+.sumbox .item{display:flex;justify-content:space-between;align-items:center;font-weight:700;padding:6px 0}
+.sumbox .item span{display:flex;align-items:center;gap:10px}
+.sumbox .item .ico{color:var(--ok)}
+.sumbox .btn{width:100%;margin:16px 0 14px;padding:15px}
+.sumbox .code{font-size:.82rem;color:var(--mut);margin-bottom:14px}
+.sumbox .code b{color:#b9a8ff}
+.pays{display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--bd)}
+.pays span{background:#1d2150;border-radius:6px;padding:6px 10px;font-size:.78rem;font-weight:700;color:var(--mut)}
+@media(max-width:1000px){.dgrid{grid-template-columns:1fr 1fr}.sumbox{grid-column:1/-1}.size-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.dgrid{grid-template-columns:1fr}.size .big{font-size:1.5rem}}
+
+/* compare table */
+.cmp{max-width:820px;margin:0 auto;border:1px solid var(--bd);border-radius:16px;overflow:hidden;background:var(--card)}
+.cmp .r{display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 22px;border-top:1px solid var(--bd);font-size:.94rem}
+.cmp .r:first-child{border-top:none;background:var(--card2);font-weight:800}
+.cmp .r span:first-child{color:var(--mut)}
+.cmp-scroll{overflow-x:auto}
+
+/* faq */
+details{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 22px;margin-bottom:12px}
+summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';color:var(--p);font-size:1.3rem;line-height:1}
+details[open] summary::after{content:'\2212'}
+details p{color:var(--mut);margin-top:12px;font-size:.94rem}
+
+/* cta + footer */
+.cta{background:linear-gradient(135deg,#3a24a8,#7c5cff);border-radius:24px;padding:56px 28px;text-align:center}
+.cta h2{font-size:2.2rem;font-weight:800;margin-bottom:10px}
+.cta p{opacity:.85;margin-bottom:24px}
+.cta .btn{background:#fff;color:#2b1a85}
+footer.site{border-top:1px solid var(--bd);padding:44px 0;color:var(--mut);font-size:.85rem}
+footer.site .wrap{display:flex;flex-direction:column;gap:14px}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap}
+.foot-links a{text-decoration:none}
+.foot-links a:hover{color:#fff}
+.risk{font-size:.78rem;opacity:.75;max-width:900px}
+
+/* auth + payment modals */
+.overlay{position:fixed;inset:0;background:rgba(5,6,16,.72);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:1000;padding:16px}
+.overlay.active{display:flex}
+.modal{background:var(--card);border:1px solid var(--bd);border-radius:20px;width:100%;max-width:420px;padding:32px;position:relative;max-height:92vh;overflow-y:auto}
+.modal .x{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--mut);cursor:pointer;font-size:1.2rem}
+.modal h3{font-size:1.4rem;margin-bottom:6px}
+.modal .sub{color:var(--mut);font-size:.9rem;margin-bottom:20px}
+.field{margin-bottom:14px;text-align:left}
+.field label{display:block;font-size:.82rem;font-weight:700;margin-bottom:6px;color:var(--mut)}
+.in{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:.95rem;font-family:inherit;outline:none}
+.in:focus{border-color:var(--p)}
+.msg{display:none;padding:10px 14px;border-radius:8px;font-size:.86rem;margin-bottom:14px;text-align:left}
+.msg.err{background:rgba(255,107,129,.12);color:var(--bad)}
+.msg.okm{background:rgba(34,211,166,.12);color:var(--ok)}
+.auth-row{display:flex;justify-content:flex-end;margin-bottom:16px}
+.auth-row a{color:#b9a8ff;font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:none}
+.auth-switch{text-align:center;margin-top:20px;font-size:.9rem;color:var(--mut)}
+.auth-switch a{color:#b9a8ff;font-weight:700;cursor:pointer;text-decoration:none}
+.pay{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;text-decoration:none;font-weight:700;margin-top:12px}
+.pay:hover{border-color:var(--p)}
+
+/* dashboard */
+.dash{display:grid;grid-template-columns:250px 1fr;min-height:100vh;background:var(--bg)}
+.side{background:var(--bg2);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+.side .logo{padding:4px 10px 22px}
+.side a.nl{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--mut);text-decoration:none;font-weight:600;font-size:.93rem}
+.side a.nl:hover{background:var(--card);color:#fff}
+.side a.nl.on{background:var(--soft);color:#fff}
+.side a.nl.on .ico{color:var(--p)}
+.side .grow{flex:1}
+.dmain{padding:28px 34px 60px;min-width:0}
+.dtop{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}
+.dtop h1{font-size:1.7rem;font-weight:800}
+.dtop .sub{color:var(--mut);font-size:.92rem}
+.menu-btn{display:none;background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:9px 12px;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px}
+.kpi span{color:var(--mut);font-size:.84rem;font-weight:600}
+.kpi b{display:block;font-family:'Sora';font-size:1.8rem;margin-top:4px}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:24px;margin-bottom:22px}
+.panel h2{font-size:1.1rem;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.empty{text-align:center;padding:38px 16px;color:var(--mut)}
+.empty .ei{width:54px;height:54px;border-radius:16px;background:var(--soft);color:#b9a8ff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.5rem}
+.empty h3{color:var(--tx);font-size:1.05rem;margin-bottom:6px}
+.empty p{font-size:.9rem;max-width:380px;margin:0 auto 18px}
+.accts{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.tbl th{text-align:left;color:var(--mut);font-weight:700;font-size:.8rem;padding:10px 12px;border-bottom:1px solid var(--bd)}
+.tbl td{padding:13px 12px;border-bottom:1px solid var(--bd)}
+.tbl-wrap{overflow-x:auto}
+.rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.rule{background:var(--bg);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.rule b{display:block;font-family:'Sora';font-size:1.5rem;margin-bottom:2px}
+.rule span{color:var(--mut);font-size:.85rem}
+.scrim{display:none}
+
+@media(max-width:960px){
+  .hero .wrap{grid-template-columns:1fr}
+  .hero h1{font-size:2.6rem}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .nav{display:none}
+}
+@media(max-width:820px){
+  .dash{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:260px;z-index:900;transform:translateX(-100%);transition:transform .2s}
+  .side.open{transform:none}
+  .scrim.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:850}
+  .menu-btn{display:inline-block}
+  .dmain{padding:20px 16px 50px}
+}
+@media(max-width:640px){
+  .stats .wrap{grid-template-columns:repeat(2,1fr)}
+  .sel{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .sec-title h2{font-size:1.8rem}
+  .cmp .r{padding:12px 14px;font-size:.85rem}
+  .hdr-user{display:none}
+  section.s{padding:60px 0}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<!-- SVG icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="14.5" r="1"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-cash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h10a4 4 0 014 4v12H8a4 4 0 01-4-4V4z"/><path d="M8 20a4 4 0 01-4-4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H5a1 1 0 00-1 1v14a1 1 0 001 1h4"/><path d="M16 8l4 4-4 4M20 12H9"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+    <symbol id="i-pie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v9h9"/><path d="M20 15a9 9 0 11-11-11"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 8h4.5a2 2 0 010 4H9m0 0h5a2 2 0 010 4H9M9 7v10M11 6v2M11 16v2"/></symbol>
+  </defs>
+</svg>
+
+<div id="app"></div>
+
+<!-- AUTH MODAL -->
+<div class="overlay" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="modal">
+    <button class="x" onclick="closeAuth()" aria-label="Close">&times;</button>
+    <div class="logo" style="margin-bottom:22px"><svg class="ico" style="color:var(--p)"><use href="#i-chart"/></svg>SMC<em>PROPFIRM</em></div>
+    <h3 id="authTitle">Sign in to your account</h3>
+    <p class="sub" id="authSub">Enter your email and password.</p>
+    <div class="msg err" id="authError"></div>
+    <div class="msg okm" id="authSuccess"></div>
+    <div class="field"><label for="emailInput">Email address</label><input type="email" id="emailInput" class="in" placeholder="name@example.com" autocomplete="email"></div>
+    <div class="field"><label for="passwordInput">Password</label><input type="password" id="passwordInput" class="in" placeholder="Your password" autocomplete="current-password"></div>
+    <div class="auth-row" id="forgotRow"><a onclick="forgotPassword()">Forgot password?</a></div>
+    <button class="btn btn-p" style="width:100%" id="authSubmit" onclick="submitAuth()">Sign in</button>
+    <div class="auth-switch"><span id="switchPrefix">New here?</span> <a id="switchLink" onclick="switchMode()">Create your account</a></div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="overlay" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+  <div class="modal">
+    <button class="x" onclick="closePay()" aria-label="Close">&times;</button>
+    <h3 id="payTitle">Choose how to pay</h3>
+    <p class="sub">Pick a payment method to finish your order.</p>
+    <a href="#" id="stripeBtn" target="_blank" rel="noopener" class="pay"><span><svg class="ico" style="color:var(--p)"><use href="#i-wallet"/></svg> &nbsp;Card (Stripe)</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+    <p id="noCard" class="sub" style="display:none;margin-top:14px">Card payment is not available for this account yet. You can pay with crypto.</p>
+    <a href="#" id="cryptoBtn" target="_blank" rel="noopener" class="pay"><span><svg class="ico" style="color:#f7931a"><use href="#i-coin"/></svg> &nbsp;Crypto (NOWPayments)</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/dist/umd/supabase.js"></script>
+<script>
+/* ============ SETTINGS ============ */
+const SUPABASE_URL = 'https://dofncwwlubzllglwpkrr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_4oSYI75c5v1IwYiatvBaTQ_PslS9lq9';
+/* One Stripe Payment Link PER account (each link must contain only that one product).
+   Paste the link for each plan + size. Empty = card payment is hidden for that account. */
+const STRIPE_LINKS = {
+  'challenge-2000':'',  'challenge-5000':'',  'challenge-10000':'',  'challenge-15000':'',
+  'challenge-50000':'', 'challenge-100000':'','challenge-150000':'', 'challenge-200000':'',
+  'instant-2000':'',    'instant-5000':'',    'instant-10000':'',    'instant-15000':'',
+  'instant-50000':'',   'instant-100000':'',  'instant-150000':'',   'instant-200000':''
+};
+const NOW = 'https://nowpayments.io/payment/?iid=';
+const PROMO = 'SMC10';
+/* Optional Supabase tables read by the dashboard (empty state shows if they do not exist):
+   accounts: id, user_id, plan ('challenge'|'instant'), size (number), balance (number),
+             status ('active'|'passed'|'funded'|'breached'), phase (text), profit_target_pct (number), created_at
+   payouts:  id, user_id, amount (number), method (text), status ('pending'|'paid'|'rejected'), created_at */
+/* ================================ */
+
+const PLANS = {
+  challenge: { label:'Evaluation Challenge', sub:'2 phases | 8% then 5% profit targets', cta:'Start Challenge', name:'Challenge',
+    left:{ title:'Challenge Rules', rows:[['Phase 1 Profit Target',8],['Phase 2 Profit Target',5],['Daily Loss Limit',5],['Maximum Loss Limit',10],['Platform','cTrader']] },
+    right:{ title:'Funded Account Rules', rows:[['Daily Loss Limit',5],['Maximum Loss Limit',10],['Platform','cTrader']] },
+    sizes:[['$2,000','$29','4398622033'],['$5,000','$59','4398622033'],['$10,000','$99','4398622033'],['$15,000','$139','4398622033'],['$50,000','$299','5163043336'],['$100,000','$499','5724610520'],['$150,000','$679','5724610520'],['$200,000','$899','5724610520']], popular:4 },
+  instant: { label:'Instant Funding', sub:'No evaluation | 80% profit split', cta:'Buy Instant', name:'Instant',
+    left:{ title:'Account Rules', rows:[['Evaluation','None'],['Daily Loss Limit',5],['Maximum Loss Limit',10],['Platform','cTrader']] },
+    right:{ title:'Funded & Reward Rules', rows:[['Daily Loss Limit',5],['Maximum Loss Limit',10],['Reward Share','80%'],['Platform','cTrader']] },
+    sizes:[['$2,000','$49','5320986875'],['$5,000','$89','5320986875'],['$10,000','$149','5320986875'],['$15,000','$199','5320986875'],['$50,000','$399','6114767314'],['$100,000','$699','6165027996'],['$150,000','$999','6165027996'],['$200,000','$1,299','6165027996']], popular:-1 }
+};
+
+let sb = null, user = null, isSignUp = false;
+let pending = null;                 // {name, stripe, crypto}
+const pick = {};                    // picker state per context
+let data = { accounts: [], payouts: [], loaded: false };
+
+try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch (e) { console.error('Supabase failed to load', e); }
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ico = (n, extra) => '<svg class="ico"' + (extra ? ' style="' + extra + '"' : '') + '><use href="#i-' + n + '"/></svg>';
+const money = n => '$' + Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
+
+/* ---------- TEMPLATES ---------- */
+function pickerHTML(ctx) {
+  return '<div class="picker">' +
+    '<div class="prog-row">' + Object.keys(PLANS).map(k => '<button class="prog" id="' + ctx + '-tab-' + k + '" onclick="setType(\'' + ctx + '\',\'' + k + '\')"><b>' + PLANS[k].label + '</b><span>' + PLANS[k].sub + '</span></button>').join('') + '</div>' +
+    '<div class="size-row" id="' + ctx + '-chips"></div>' +
+    '<div class="detail"><div class="dtools"><button class="switch on" id="' + ctx + '-pct" onclick="togglePct(\'' + ctx + '\')"><span class="tr"></span>Show Percentage</button></div>' +
+    '<div class="dgrid"><div class="rbox" id="' + ctx + '-left"></div><div class="rbox" id="' + ctx + '-right"></div>' +
+    '<div class="sumbox"><h3 id="' + ctx + '-title"></h3><div class="pr" id="' + ctx + '-price"></div><div class="ql">QUANTITY</div>' +
+    '<div class="item"><span>' + ico('check') + '1st account</span><b id="' + ctx + '-price2"></b></div>' +
+    '<button class="btn btn-p" id="' + ctx + '-btn">Start</button><div class="code">Use code <b>' + PROMO + '</b> for 10% off new users</div>' +
+    '<div class="pays"><span>Card (Stripe)</span><span>Crypto (NOWPayments)</span></div></div></div></div></div>';
+}
+function setType(ctx, t) { const pct = pick[ctx] ? pick[ctx].pct : true; pick[ctx] = { type: t, idx: PLANS[t].popular >= 0 ? PLANS[t].popular : 2, pct }; renderPicker(ctx); }
+function setSize(ctx, i) { pick[ctx].idx = i; renderPicker(ctx); }
+function togglePct(ctx) { pick[ctx].pct = !pick[ctx].pct; renderPicker(ctx); }
+function sizeNum(label) { return Number(label.replace(/[^0-9]/g, '')); }
+function sizeShort(n) { return n >= 1000 ? (n / 1000) + 'K' : String(n); }
+function ruleBox(box, size, showPct) {
+  return '<h4>' + box.title + '</h4>' + box.rows.map(r => {
+    const v = typeof r[1] === 'number' ? (showPct ? r[1] + '%' : money(size * r[1] / 100)) : r[1];
+    return '<div class="rl"><span>' + ico('info') + r[0] + '</span><b>' + v + '</b></div>';
+  }).join('');
+}
+function renderPicker(ctx) {
+  if (!$(ctx + '-chips')) return;
+  if (!pick[ctx]) pick[ctx] = { type: 'challenge', idx: PLANS.challenge.popular, pct: true };
+  const st = pick[ctx], p = PLANS[st.type], s = p.sizes[st.idx], n = sizeNum(s[0]);
+  Object.keys(PLANS).forEach(k => { $(ctx + '-tab-' + k).className = 'prog' + (k === st.type ? ' on' : ''); });
+  $(ctx + '-chips').innerHTML = p.sizes.map((x, i) =>
+    '<button class="size' + (i === st.idx ? ' on' : '') + '" onclick="setSize(\'' + ctx + '\',' + i + ')">' + (i === p.popular ? '<i>Popular</i>' : '') +
+    '<small>Account</small><span class="big"><sup>$</sup>' + sizeShort(sizeNum(x[0])) + '</span><span class="pc">' + x[1] + '</span></button>').join('');
+  $(ctx + '-pct').className = 'switch' + (st.pct ? ' on' : '');
+  $(ctx + '-left').innerHTML = ruleBox(p.left, n, st.pct);
+  $(ctx + '-right').innerHTML = ruleBox(p.right, n, st.pct);
+  $(ctx + '-title').textContent = p.name + ' ' + '$' + sizeShort(n);
+  $(ctx + '-price').textContent = s[1];
+  $(ctx + '-price2').textContent = s[1];
+  const b = $(ctx + '-btn'); b.textContent = p.cta;
+  b.onclick = () => checkout(s[0] + ' ' + p.name, STRIPE_LINKS[st.type + '-' + n] || '', NOW + s[2]);
+}
+
+function siteHeader() {
+  return '<div class="promo">Use code <strong>' + PROMO + '</strong> for 10% off new users and 5% off existing users</div>' +
+  '<header class="site"><div class="wrap">' +
+    '<a class="logo" href="#/">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></a>' +
+    '<ul class="nav"><li><a href="#/" onclick="goSec(\'challenges\',\'challenge\');return false">Challenges</a></li><li><a href="#/" onclick="goSec(\'challenges\',\'instant\');return false">Instant Funding</a></li><li><a href="#/" onclick="goSec(\'how\');return false">How it works</a></li><li><a href="#/" onclick="goSec(\'rules\');return false">Rules</a></li><li><a href="#/" onclick="goSec(\'faq\');return false">FAQ</a></li></ul>' +
+    '<div class="hdr-actions" id="hdrActions"></div>' +
+  '</div></header>';
+}
+function renderHdr() {
+  const el = $('hdrActions'); if (!el) return;
+  if (user) {
+    el.innerHTML = '<span class="hdr-user">' + esc(user.email) + '</span><a class="btn btn-p btn-sm" href="#/dashboard">Dashboard</a>';
+  } else {
+    el.innerHTML = '<button class="link-btn" onclick="openAuth(false)">Sign in</button><a class="btn btn-p btn-sm" href="#/" onclick="goSec(\'challenges\');return false">Get funded</a>';
+  }
+}
+
+function homeHTML() {
+  return siteHeader() +
+  '<section class="hero"><div class="wrap"><div>' +
+    '<span class="pill">Trade our capital. Keep your profits.</span>' +
+    '<h1>Get funded up to $200K and trade on your terms</h1>' +
+    '<p class="lead">Trade in a fully simulated environment with raw spreads on cTrader. Pass the evaluation, or skip it with Instant Funding.</p>' +
+    '<div class="btns"><a class="btn btn-p" href="#/" onclick="goSec(\'challenges\');return false">Start your challenge</a><a class="btn btn-g" href="#/" onclick="goSec(\'how\');return false">How it works</a></div>' +
+    '<div class="hero-points"><span>' + ico('check') + 'No time limit on the evaluation</span><span>' + ico('check') + '80% profit split on Instant</span><span>' + ico('check') + 'Raw spreads on cTrader</span></div>' +
+  '</div>' +
+  '<div class="acct-card"><div class="acct-top"><b>Challenge account</b><span class="tag ok">Most popular</span></div>' +
+    '<div class="acct-size">$50,000</div><div class="acct-sub">Evaluation Challenge on cTrader</div>' +
+    '<div class="lbl" style="margin-bottom:0">Phase 1 profit target</div><div class="bar"><i style="width:100%"></i></div>' +
+    '<div class="kv"><span>Phase 1 / Phase 2 target</span><b>8% / 5%</b></div><div class="kv"><span>Daily loss limit</span><b>5%</b></div><div class="kv"><span>Max loss limit</span><b>10%</b></div></div>' +
+  '</div></section>' +
+
+  '<div class="stats"><div class="wrap"><div><b>$200K</b><span>Largest account</span></div><div><b>8</b><span>Account sizes</span></div><div><b>80%</b><span>Profit split (Instant)</span></div><div><b>cTrader</b><span>Trading platform</span></div></div></div>' +
+
+  '<section class="s" id="challenges"><div class="wrap"><div class="sec-title"><h2>Choose your account</h2><p>Select a program and the account size that fits your style.</p></div>' + pickerHTML('home') + '</div></section>' +
+
+  '<section class="s alt"><div class="wrap"><div class="sec-title"><h2>Why trade with SMC</h2><p>Built for traders who follow Smart Money Concepts.</p></div><div class="grid3">' +
+    '<div class="box"><div class="ic">' + ico('layers') + '</div><h3>Two ways to get funded</h3><p>Pass the evaluation, or go straight to a funded account with Instant Funding.</p></div>' +
+    '<div class="box"><div class="ic">' + ico('shield') + '</div><h3>Clear, simple rules</h3><p>Daily loss 5% and max loss 10% on every account. No hidden conditions.</p></div>' +
+    '<div class="box"><div class="ic">' + ico('bolt') + '</div><h3>Raw spreads on cTrader</h3><p>A professional platform with fast execution for every account size.</p></div>' +
+    '<div class="box"><div class="ic">' + ico('pie') + '</div><h3>80% profit split</h3><p>Instant Funding accounts keep 80% of the profits they make.</p></div>' +
+    '<div class="box"><div class="ic">' + ico('wallet') + '</div><h3>$2K to $200K</h3><p>Start small or go big. Eight account sizes for challenges and instant accounts.</p></div>' +
+    '<div class="box"><div class="ic">' + ico('monitor') + '</div><h3>Your own dashboard</h3><p>Track your accounts, rules and payouts in one place after you sign in.</p></div>' +
+  '</div></div></section>' +
+
+  '<section class="s" id="how"><div class="wrap"><div class="sec-title"><h2>How it works</h2><p>Four steps from sign-up to funded.</p></div><div class="steps">' +
+    '<div class="step"><div class="n">1</div><h3>Choose your account</h3><p>Pick a challenge or an instant account and the size that fits you.</p></div>' +
+    '<div class="step"><div class="n">2</div><h3>Pass Phase 1</h3><p>Reach the 8% profit target without breaking the daily or max loss rule.</p></div>' +
+    '<div class="step"><div class="n">3</div><h3>Pass Phase 2</h3><p>Reach the 5% profit target while staying inside the same loss limits.</p></div>' +
+    '<div class="step"><div class="n">4</div><h3>Get funded</h3><p>Trade the funded account and keep your share of the profits.</p></div>' +
+  '</div></div></section>' +
+
+  '<section class="s alt" id="rules"><div class="wrap"><div class="sec-title"><h2>Compare programs</h2><p>The rules at a glance.</p></div><div class="cmp-scroll"><div class="cmp">' +
+    '<div class="r"><span></span><span>Challenge</span><span>Instant</span></div>' +
+    '<div class="r"><span>Evaluation</span><span>2 phases</span><span>None</span></div>' +
+    '<div class="r"><span>Profit target</span><span>8% then 5%</span><span>None</span></div>' +
+    '<div class="r"><span>Daily loss limit</span><span>5%</span><span>5%</span></div>' +
+    '<div class="r"><span>Max loss limit</span><span>10%</span><span>10%</span></div>' +
+    '<div class="r"><span>Profit split</span><span>Shown at funding</span><span>80%</span></div>' +
+    '<div class="r"><span>Platform</span><span>cTrader</span><span>cTrader</span></div>' +
+  '</div></div></div></section>' +
+
+  '<section class="s" id="faq"><div class="wrap" style="max-width:820px"><div class="sec-title"><h2>Frequently asked questions</h2></div>' +
+    '<details><summary>What is the difference between Challenge and Instant Funding?</summary><p>The challenge has an evaluation with profit targets before you are funded. Instant Funding gives you a funded account with no evaluation.</p></details>' +
+    '<details><summary>What are the loss rules?</summary><p>The daily loss limit is 5% and the maximum loss limit is 10% on every account.</p></details>' +
+    '<details><summary>Which platform do you use?</summary><p>All accounts trade on cTrader.</p></details>' +
+    '<details><summary>How do I pay?</summary><p>You can pay by card (Stripe) or with crypto (NOWPayments). Create an account first, then choose your payment method.</p></details>' +
+    '<details><summary>Where do I see my accounts?</summary><p>Sign in and open your Dashboard. Your accounts, rules and payouts are listed there.</p></details>' +
+  '</div></section>' +
+
+  '<section class="s" style="padding-top:0"><div class="wrap"><div class="cta"><h2>Ready to get funded?</h2><p>Pick your account and start trading today.</p><a class="btn" href="#/" onclick="goSec(\'challenges\');return false">Start your challenge</a></div></div></section>' +
+  footerHTML();
+}
+function footerHTML() {
+  return '<footer class="site"><div class="wrap"><div class="logo">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></div>' +
+    '<div class="foot-links"><a href="#/" onclick="goSec(\'challenges\');return false">Challenges</a><a href="#/" onclick="goSec(\'how\');return false">How it works</a><a href="#/" onclick="goSec(\'faq\');return false">FAQ</a></div>' +
+    '<p class="risk">All trading takes place in a simulated environment with virtual funds. Trading involves risk and past performance does not guarantee future results. Nothing on this site is financial advice.</p>' +
+    '<div>&copy; 2026 SMC Prop Firm. All rights reserved. cTrader API Partner.</div></div></footer>';
+}
+
+/* ---------- DASHBOARD ---------- */
+const DPAGES = [
+  ['overview','Overview','home'],['accounts','My accounts','wallet'],['new','New challenge','plus'],
+  ['payouts','Payouts','cash'],['rules','Trading rules','book'],['settings','Settings','user']
+];
+const DTITLE = { overview:['Overview','Your accounts at a glance.'], accounts:['My accounts','All the accounts you have bought.'], new:['New challenge','Pick a program and an account size.'], payouts:['Payouts','Your payout requests and history.'], rules:['Trading rules','Stay inside these limits on every account.'], settings:['Settings','Manage your login details.'] };
+
+function dashShell(page) {
+  const nav = DPAGES.map(p => '<a class="nl' + (p[0] === page ? ' on' : '') + '" href="#/dashboard/' + p[0] + '">' + ico(p[2]) + p[1] + '</a>').join('');
+  const t = DTITLE[page];
+  return '<div class="dash"><aside class="side" id="side"><a class="logo" href="#/">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></a>' + nav +
+    '<div class="grow"></div><a class="nl" href="#/">' + ico('monitor') + 'Back to site</a><a class="nl" href="#" onclick="doSignOut();return false">' + ico('out') + 'Sign out</a></aside>' +
+    '<div class="scrim" id="scrim" onclick="toggleSide()"></div>' +
+    '<main class="dmain"><div class="dtop"><div><h1>' + t[0] + '</h1><div class="sub">' + t[1] + '</div></div>' +
+    '<div style="display:flex;gap:10px;align-items:center"><button class="menu-btn" onclick="toggleSide()" aria-label="Menu">' + ico('menu') + '</button><a class="btn btn-p btn-sm" href="#/dashboard/new">' + ico('plus') + ' New challenge</a></div></div>' +
+    '<div id="dbody"></div></main></div>';
+}
+function toggleSide() { $('side').classList.toggle('open'); $('scrim').classList.toggle('open'); }
+
+function statusTag(s) {
+  const m = { active:'ok', funded:'ok', passed:'ok', paid:'ok', pending:'warn', breached:'bad', rejected:'bad' };
+  return '<span class="tag ' + (m[s] || '') + '">' + esc(s || 'unknown') + '</span>';
+}
+function emptyBlock(icon, title, text, btn) {
+  return '<div class="empty"><div class="ei">' + ico(icon) + '</div><h3>' + title + '</h3><p>' + text + '</p>' + (btn || '') + '</div>';
+}
+function acctCard(a) {
+  const size = Number(a.size) || 0, bal = Number(a.balance) || size, tgt = Number(a.profit_target_pct) || 0;
+  const pl = size ? (bal - size) / size * 100 : 0;
+  const prog = tgt ? Math.max(0, Math.min(100, pl / tgt * 100)) : 0;
+  return '<div class="acct-card" style="box-shadow:none"><div class="acct-top"><b>' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + (a.phase ? ' &middot; ' + esc(a.phase) : '') + '</b>' + statusTag(a.status) + '</div>' +
+    '<div class="acct-size" style="font-size:2rem">' + money(size) + '</div><div class="acct-sub">Balance ' + money(bal) + '</div>' +
+    (tgt ? '<div class="lbl" style="margin-bottom:0">Profit target ' + tgt + '%</div><div class="bar"><i style="width:' + prog.toFixed(0) + '%"></i></div>' : '') +
+    '<div class="kv"><span>Profit / loss</span><b style="color:' + (pl >= 0 ? 'var(--ok)' : 'var(--bad)') + '">' + (pl >= 0 ? '+' : '') + pl.toFixed(2) + '%</b></div>' +
+    '<div class="kv"><span>Daily / max loss</span><b>5% / 10%</b></div></div>';
+}
+function payoutTable() {
+  if (!data.payouts.length) return emptyBlock('cash', 'No payouts yet', 'Payouts appear here after your funded account makes a profit.');
+  return '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead><tbody>' +
+    data.payouts.map(p => '<tr><td>' + esc(p.created_at ? new Date(p.created_at).toLocaleDateString() : '-') + '</td><td>' + money(p.amount) + '</td><td>' + esc(p.method || '-') + '</td><td>' + statusTag(p.status) + '</td></tr>').join('') + '</tbody></table></div>';
+}
+const newBtn = '<a class="btn btn-p btn-sm" href="#/dashboard/new">Buy a challenge</a>';
+
+function dashBody(page) {
+  const act = data.accounts.filter(a => a.status === 'active' || a.status === 'passed').length;
+  const fund = data.accounts.filter(a => a.status === 'funded').length;
+  const paid = data.payouts.filter(p => p.status === 'paid').reduce((s, p) => s + Number(p.amount || 0), 0);
+  if (page === 'overview') {
+    return '<div class="kpis"><div class="kpi"><span>Accounts</span><b>' + data.accounts.length + '</b></div><div class="kpi"><span>In evaluation</span><b>' + act + '</b></div><div class="kpi"><span>Funded</span><b>' + fund + '</b></div><div class="kpi"><span>Total paid out</span><b>' + money(paid) + '</b></div></div>' +
+      '<div class="panel"><h2>Your accounts <a class="btn btn-g btn-sm" href="#/dashboard/accounts">View all</a></h2>' +
+      (data.accounts.length ? '<div class="accts">' + data.accounts.slice(0, 3).map(acctCard).join('') + '</div>' : emptyBlock('wallet', 'No accounts yet', 'Buy a challenge or an instant account and it will show up here.', newBtn)) + '</div>' +
+      '<div class="panel"><h2>Recent payouts <a class="btn btn-g btn-sm" href="#/dashboard/payouts">View all</a></h2>' + payoutTable() + '</div>';
+  }
+  if (page === 'accounts') {
+    return '<div class="panel">' + (data.accounts.length ? '<div class="accts">' + data.accounts.map(acctCard).join('') + '</div>' : emptyBlock('wallet', 'No accounts yet', 'Buy a challenge or an instant account and it will show up here.', newBtn)) + '</div>';
+  }
+  if (page === 'new') return pickerHTML('dash');
+  if (page === 'payouts') return payoutForm() + '<div class="panel"><h2>Payout history</h2>' + payoutTable() + '</div>';
+  if (page === 'rules') {
+    return '<div class="panel"><h2>Loss limits (all accounts)</h2><div class="rule-grid"><div class="rule"><b>5%</b><span>Daily loss limit</span></div><div class="rule"><b>10%</b><span>Max loss limit</span></div></div></div>' +
+      '<div class="panel"><h2>Evaluation Challenge</h2><div class="rule-grid"><div class="rule"><b>8%</b><span>Phase 1 profit target</span></div><div class="rule"><b>5%</b><span>Phase 2 profit target</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>' +
+      '<div class="panel"><h2>Instant Funding</h2><div class="rule-grid"><div class="rule"><b>None</b><span>Evaluation</span></div><div class="rule"><b>80%</b><span>Profit split</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>';
+  }
+  if (page === 'settings') {
+    return '<div class="panel" style="max-width:520px"><h2>Login details</h2>' +
+      '<div class="field"><label>Email address</label><input class="in" value="' + esc(user.email) + '" disabled></div>' +
+      '<div class="msg err" id="pwErr"></div><div class="msg okm" id="pwOk"></div>' +
+      '<div class="field"><label for="newPw">New password</label><input type="password" id="newPw" class="in" placeholder="At least 6 characters" autocomplete="new-password"></div>' +
+      '<button class="btn btn-p btn-sm" onclick="changePw()">Update password</button></div>';
+  }
+  return '';
+}
+
+
+function payoutForm() {
+  const funded = data.accounts.filter(a => a.status === 'funded');
+  if (!funded.length) return '<div class="panel"><h2>Request a payout</h2>' + emptyBlock('cash', 'No funded account yet', 'You can request a payout once one of your accounts is funded.') + '</div>';
+  return '<div class="panel" style="max-width:560px"><h2>Request a payout</h2>' +
+    '<div class="msg err" id="poErr"></div><div class="msg okm" id="poOk"></div>' +
+    '<div class="field"><label for="poAcct">Funded account</label><select id="poAcct" class="in">' + funded.map(a => '<option value="' + esc(a.id) + '">' + money(a.size) + ' &middot; balance ' + money(a.balance) + '</option>').join('') + '</select></div>' +
+    '<div class="field"><label for="poAmt">Amount (USD)</label><input id="poAmt" type="number" min="1" step="0.01" class="in" placeholder="0.00"></div>' +
+    '<div class="field"><label for="poMethod">Method</label><select id="poMethod" class="in"><option>Crypto (USDT TRC20)</option><option>Bank transfer</option></select></div>' +
+    '<div class="field"><label for="poDet">Wallet address or bank details</label><textarea id="poDet" class="in" rows="3" placeholder="Where should we send it?"></textarea></div>' +
+    '<button class="btn btn-p btn-sm" id="poBtn" onclick="requestPayout()">Send request</button></div>';
+}
+async function requestPayout() {
+  const er = $('poErr'), ok = $('poOk');
+  er.style.display = ok.style.display = 'none';
+  const amount = parseFloat($('poAmt').value), det = $('poDet').value.trim();
+  if (!(amount > 0)) { er.textContent = 'Enter an amount greater than 0.'; er.style.display = 'block'; return; }
+  if (!det) { er.textContent = 'Enter your wallet address or bank details.'; er.style.display = 'block'; return; }
+  $('poBtn').disabled = true;
+  const { error } = await sb.from('payouts').insert({ user_id: user.id, account_id: $('poAcct').value, amount, method: $('poMethod').value, details: det, status: 'pending' });
+  $('poBtn').disabled = false;
+  if (error) { er.textContent = 'Could not send the request: ' + error.message; er.style.display = 'block'; return; }
+  data.loaded = false; await loadData(); data.loaded = true;
+  $('dbody').innerHTML = dashBody('payouts');
+  $('poOk') && ($('poOk').textContent = 'Request sent. We will review it soon.', $('poOk').style.display = 'block');
+}
+
+async function loadData() {
+  data = { accounts: [], payouts: [], loaded: true };
+  if (!sb || !user) return;
+  try {
+    const a = await sb.from('accounts').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+    if (!a.error && a.data) data.accounts = a.data;
+  } catch (e) {}
+  try {
+    const p = await sb.from('payouts').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+    if (!p.error && p.data) data.payouts = p.data;
+  } catch (e) {}
+}
+
+async function changePw() {
+  const pw = $('newPw').value, er = $('pwErr'), ok = $('pwOk');
+  er.style.display = ok.style.display = 'none';
+  if (pw.length < 6) { er.textContent = 'Password must be at least 6 characters.'; er.style.display = 'block'; return; }
+  const { error } = await sb.auth.updateUser({ password: pw });
+  if (error) { er.textContent = error.message; er.style.display = 'block'; }
+  else { ok.textContent = 'Password updated.'; ok.style.display = 'block'; $('newPw').value = ''; }
+}
+
+/* ---------- ROUTER ---------- */
+let authReady = false;
+async function route() {
+  const h = location.hash || '#/';
+  const app = $('app');
+  if (h.startsWith('#/dashboard')) {
+    if (!authReady) { app.innerHTML = ''; return; }
+    if (!user) { location.hash = '#/'; openAuth(false); return; }
+    const page = (h.split('/')[2] || 'overview');
+    const pg = DTITLE[page] ? page : 'overview';
+    app.innerHTML = dashShell(pg);
+    window.scrollTo(0, 0);
+    if (!data.loaded) { $('dbody').innerHTML = '<div class="panel"><div class="empty"><p>Loading your data...</p></div></div>'; await loadData(); }
+    $('dbody').innerHTML = dashBody(pg);
+    if (pg === 'new') renderPicker('dash');
+    return;
+  }
+  app.innerHTML = homeHTML();
+  renderHdr();
+  renderPicker('home');
+  window.scrollTo(0, 0);
+}
+function goSec(id, type) {
+  if (type) setType('home', type);
+  const el = $(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+window.addEventListener('hashchange', route);
+
+/* ---------- AUTH ---------- */
+function clearMsgs() { $('authError').style.display = 'none'; $('authSuccess').style.display = 'none'; }
+function showErr(m) { clearMsgs(); const e = $('authError'); e.textContent = m; e.style.display = 'block'; }
+function showOk(m) { clearMsgs(); const e = $('authSuccess'); e.textContent = m; e.style.display = 'block'; }
+function needSb() { if (sb) return false; showErr('Sign-in service could not load. Refresh the page and try again.'); return true; }
+function setMode(up) {
+  isSignUp = up;
+  $('authTitle').textContent = up ? 'Create your account' : 'Sign in to your account';
+  $('authSub').textContent = up ? 'Sign up once. We will email you a link to confirm your address.' : 'Enter your email and password.';
+  $('authSubmit').textContent = up ? 'Create account' : 'Sign in';
+  $('passwordInput').autocomplete = up ? 'new-password' : 'current-password';
+  $('switchPrefix').textContent = up ? 'Already have an account?' : 'New here?';
+  $('switchLink').textContent = up ? 'Sign in' : 'Create your account';
+  $('forgotRow').style.display = up ? 'none' : 'flex';
+}
+function switchMode() { setMode(!isSignUp); clearMsgs(); }
+function openAuth(up) { setMode(!!up); clearMsgs(); $('authModal').classList.add('active'); setTimeout(() => $('emailInput').focus(), 50); }
+function closeAuth() { $('authModal').classList.remove('active'); clearMsgs(); }
+
+function afterLogin() {
+  closeAuth();
+  data = { accounts: [], payouts: [], loaded: false };
+  if (pending) { openPay(pending.name, pending.stripe, pending.crypto); renderHdr(); }
+  else if (!(location.hash || '').startsWith('#/dashboard')) location.hash = '#/dashboard';
+  else route();
+}
+
+async function submitAuth() {
+  if (needSb()) return;
+  const email = $('emailInput').value.trim(), password = $('passwordInput').value;
+  if (!email || !password) { showErr('Enter your email and password.'); return; }
+  if (isSignUp && password.length < 6) { showErr('Password must be at least 6 characters.'); return; }
+  $('authSubmit').disabled = true;
+  try {
+    if (isSignUp) {
+      const { data: d, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin } });
+      if (error) { showErr(error.message); return; }
+      if (d.user && d.user.identities && d.user.identities.length === 0) { showErr('This email is already registered. Sign in instead.'); return; }
+      if (d.session) { user = d.user; afterLogin(); return; }
+      setMode(false);
+      showOk('Account created. We sent a confirmation link to ' + email + '. Click it (check spam too), then sign in here.');
+    } else {
+      const { data: d, error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        if (/not confirmed/i.test(error.message)) {
+          await sb.auth.resend({ type: 'signup', email, options: { emailRedirectTo: location.origin } });
+          showOk('Your email is not confirmed yet. We sent you a new confirmation link.');
+        } else showErr(error.message);
+        return;
+      }
+      user = d.user; afterLogin();
+    }
+  } finally { $('authSubmit').disabled = false; }
+}
+async function forgotPassword() {
+  if (needSb()) return;
+  const email = $('emailInput').value.trim();
+  if (!email) { showErr('Enter your email above first, then click Forgot password.'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin });
+  if (error) showErr(error.message); else showOk('Password reset link sent to ' + email + '.');
+}
+async function doSignOut() {
+  if (sb) await sb.auth.signOut();
+  user = null; data = { accounts: [], payouts: [], loaded: false };
+  location.hash = '#/'; route();
+}
+
+/* ---------- PAYMENT ---------- */
+function checkout(name, stripe, crypto) {
+  pending = { name, stripe, crypto };
+  if (user) openPay(name, stripe, crypto); else openAuth(true);
+}
+function openPay(name, stripe, crypto) {
+  $('payTitle').textContent = name;
+  $('stripeBtn').style.display = stripe ? 'flex' : 'none';
+  if (stripe) $('stripeBtn').href = stripe;
+  $('cryptoBtn').href = crypto;
+  $('noCard').style.display = stripe ? 'none' : 'block';
+  $('payModal').classList.add('active');
+}
+function closePay() { $('payModal').classList.remove('active'); }
+
+$('payModal').addEventListener('click', e => { if (e.target === e.currentTarget) closePay(); });
+$('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuth(); });
+$('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitAuth(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuth(); closePay(); } });
+
+/* ---------- INIT ---------- */
+(async function init() {
+  if (sb) {
+    try {
+      const { data: d } = await sb.auth.getSession();
+      user = d.session ? d.session.user : null;
+    } catch (e) {}
+    sb.auth.onAuthStateChange((_ev, session) => {
+      const was = user && user.id;
+      user = session ? session.user : null;
+      if ((user && user.id) !== was) { data = { accounts: [], payouts: [], loaded: false }; }
+      renderHdr();
+    });
+  }
+  authReady = true;
+  route();
+})();
+</script>
+</body>
+</html>
