@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light">
 <title>SMC Prop Firm | Trade our capital, keep your profits</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+
 :root{
-  --bg:#0a0c1b;--bg2:#0f1228;--card:#141836;--card2:#1a1f45;--bd:#252b58;
-  --tx:#eef0ff;--mut:#98a0cb;--p:#7c5cff;--p2:#6a4af0;--soft:rgba(124,92,255,.14);
-  --ok:#22d3a6;--warn:#f5b84b;--bad:#ff6b81;--glow:rgba(124,92,255,.35);
+  --bg:#ffffff;--bg2:#f6f3ff;--card:#ffffff;--card2:#efe9ff;--bd:#e5dff7;
+  --tx:#1a1433;--mut:#6a6490;--p:#7c4dff;--p2:#6a3ae8;--soft:rgba(124,77,255,.10);
+  --ok:#0f9d76;--warn:#b7791f;--bad:#e0405a;--glow:rgba(124,77,255,.28);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
@@ -30,44 +31,44 @@ button{font-family:inherit}
 .btn-p{background:var(--p);color:#fff;box-shadow:0 8px 24px var(--glow)}
 .btn-p:hover{background:var(--p2);transform:translateY(-1px)}
 .btn-g{background:transparent;color:var(--tx);border-color:var(--bd)}
-.btn-g:hover{border-color:var(--p);color:#fff}
+.btn-g:hover{border-color:var(--p);color:var(--p)}
 .btn-sm{padding:8px 16px;font-size:.85rem;border-radius:8px}
 .btn[disabled]{opacity:.6;cursor:wait}
 
 /* promo + header */
-.promo{background:linear-gradient(90deg,#4b2fc9,#7c5cff);text-align:center;padding:8px 16px;font-size:.85rem;font-weight:600}
-header.site{position:sticky;top:0;z-index:100;background:rgba(10,12,27,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
+.promo{background:linear-gradient(90deg,#6a3ae8,#9b7bff);text-align:center;padding:8px 16px;font-size:.85rem;font-weight:600}
+header.site{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
 header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.3rem;text-decoration:none;white-space:nowrap}
 .logo em{font-style:normal;color:var(--p)}
 .nav{display:flex;gap:28px;list-style:none}
 .nav a{text-decoration:none;color:var(--mut);font-weight:600;font-size:.93rem;transition:color .15s}
-.nav a:hover{color:#fff}
+.nav a:hover{color:var(--p)}
 .hdr-actions{display:flex;align-items:center;gap:12px}
 .hdr-user{font-size:.85rem;color:var(--mut);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .link-btn{background:none;border:none;color:var(--tx);font-weight:700;font-size:.93rem;cursor:pointer}
 .link-btn:hover{color:var(--p)}
 
 /* hero */
-.hero{padding:84px 0 70px;background:radial-gradient(900px 420px at 80% -10%,rgba(124,92,255,.28),transparent 70%),radial-gradient(600px 300px at 0% 30%,rgba(34,211,166,.08),transparent 70%)}
+.hero{padding:84px 0 70px;background:radial-gradient(900px 420px at 80% -10%,rgba(124,77,255,.16),transparent 70%),linear-gradient(180deg,#faf8ff,#ffffff)}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
-.pill{display:inline-block;background:var(--soft);color:#b9a8ff;font-weight:700;font-size:.82rem;padding:6px 14px;border-radius:999px;margin-bottom:20px;border:1px solid rgba(124,92,255,.35)}
+.pill{display:inline-block;background:var(--soft);color:var(--p);font-weight:700;font-size:.82rem;padding:6px 14px;border-radius:999px;margin-bottom:20px;border:1px solid rgba(124,92,255,.35)}
 .hero h1{font-size:3.5rem;line-height:1.08;font-weight:800;letter-spacing:-.02em;margin-bottom:20px}
 .hero p.lead{color:var(--mut);font-size:1.1rem;max-width:520px;margin-bottom:30px}
 .hero .btns{display:flex;gap:12px;flex-wrap:wrap}
 .hero-points{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:var(--mut);font-size:.88rem;font-weight:600}
 .hero-points span{display:flex;align-items:center;gap:8px}
 .hero-points .ico{color:var(--ok)}
-.acct-card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--bd);border-radius:20px;padding:26px;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.acct-card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--bd);border-radius:20px;padding:26px;box-shadow:0 24px 60px rgba(76,29,149,.14)}
 .acct-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .acct-top b{font-size:.95rem}
-.tag{font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--soft);color:#b9a8ff}
-.tag.ok{background:rgba(34,211,166,.14);color:var(--ok)}
-.tag.warn{background:rgba(245,184,75,.14);color:var(--warn)}
-.tag.bad{background:rgba(255,107,129,.14);color:var(--bad)}
+.tag{font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--p)}
+.tag.ok{background:rgba(15,157,118,.12);color:var(--ok)}
+.tag.warn{background:rgba(183,121,31,.12);color:var(--warn)}
+.tag.bad{background:rgba(224,64,90,.12);color:var(--bad)}
 .acct-size{font-family:'Sora';font-size:2.6rem;font-weight:800;margin-bottom:4px}
 .acct-sub{color:var(--mut);font-size:.88rem;margin-bottom:22px}
-.bar{height:8px;background:#0c0f26;border-radius:99px;overflow:hidden;margin:8px 0 18px}
+.bar{height:8px;background:#e9e3fb;border-radius:99px;overflow:hidden;margin:8px 0 18px}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--ok));border-radius:99px}
 .kv{display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid var(--bd);font-size:.92rem;color:var(--mut)}
 .kv b{color:var(--tx)}
@@ -86,7 +87,7 @@ section.alt{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1
 .sec-title p{color:var(--mut);margin-top:12px}
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
 .box{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:28px}
-.box .ic{width:46px;height:46px;border-radius:12px;background:var(--soft);color:#b9a8ff;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.3rem}
+.box .ic{width:46px;height:46px;border-radius:12px;background:var(--soft);color:var(--p);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.3rem}
 .box h3{font-size:1.1rem;margin-bottom:8px}
 .box p{color:var(--mut);font-size:.94rem}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative}
@@ -99,28 +100,28 @@ section.alt{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1
 .picker{max-width:1100px;margin:0 auto}
 .prog-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:14px}
 .prog{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px 22px;text-align:left;cursor:pointer;color:var(--tx);transition:border-color .15s,background .15s}
-.prog:hover{border-color:#4a4f99}
-.prog.on{border-color:var(--p);background:linear-gradient(160deg,#1d1f52,#161a40);box-shadow:0 0 0 1px var(--p)}
+.prog:hover{border-color:#b9a3ff}
+.prog.on{border-color:var(--p);background:linear-gradient(160deg,#f1ebff,#faf8ff);box-shadow:0 0 0 1px var(--p)}
 .prog b{display:block;font-family:'Sora';font-size:1.25rem;margin-bottom:6px}
 .prog span{color:var(--mut);font-size:.85rem}
 .size-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
 .size{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 20px;text-align:left;cursor:pointer;color:var(--tx);position:relative;transition:border-color .15s}
-.size:hover{border-color:#4a4f99}
-.size.on{border-color:var(--p);background:linear-gradient(160deg,#1d1f52,#161a40);box-shadow:0 0 0 1px var(--p)}
+.size:hover{border-color:#b9a3ff}
+.size.on{border-color:var(--p);background:linear-gradient(160deg,#f1ebff,#faf8ff);box-shadow:0 0 0 1px var(--p)}
 .size small{display:block;color:var(--mut);font-size:.78rem;font-weight:600}
 .size .big{display:block;font-family:'Sora';font-size:1.9rem;font-weight:800;line-height:1.2;margin:2px 0 8px}
 .size .big sup{font-size:.9rem;font-weight:700;margin-right:2px;vertical-align:top;position:relative;top:.35em}
 .size .pc{color:var(--ok);font-weight:800;font-size:.95rem}
 .size i{position:absolute;top:10px;right:12px;background:var(--ok);color:#06231b;font-size:.62rem;font-style:normal;font-weight:800;padding:2px 7px;border-radius:5px}
-.detail{background:linear-gradient(160deg,#161a40,#10132f);border:1px solid var(--bd);border-radius:18px;padding:22px}
+.detail{background:linear-gradient(160deg,#f6f2ff,#ffffff);border:1px solid var(--bd);border-radius:18px;padding:22px}
 .dtools{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-bottom:18px;font-weight:600;font-size:.92rem}
 .switch{display:flex;align-items:center;gap:10px;background:none;border:none;color:var(--tx);font-weight:700;font-size:.92rem;cursor:pointer}
-.switch .tr{width:34px;height:20px;border-radius:99px;background:#3a3f78;position:relative;transition:background .15s}
+.switch .tr{width:34px;height:20px;border-radius:99px;background:#cdc3ee;position:relative;transition:background .15s}
 .switch .tr::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .15s}
 .switch.on .tr{background:var(--p)}
 .switch.on .tr::after{transform:translateX(14px)}
 .dgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-.rbox{background:rgba(8,10,28,.55);border:1px solid var(--bd);border-radius:14px;padding:20px 22px}
+.rbox{background:rgba(255,255,255,.85);border:1px solid var(--bd);border-radius:14px;padding:20px 22px}
 .rbox h4{font-size:.88rem;color:var(--mut);font-weight:600;margin-bottom:12px}
 .rl{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;font-size:.9rem}
 .rl span{display:flex;align-items:center;gap:10px;color:var(--mut)}
@@ -135,9 +136,9 @@ section.alt{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1
 .sumbox .item .ico{color:var(--ok)}
 .sumbox .btn{width:100%;margin:16px 0 14px;padding:15px}
 .sumbox .code{font-size:.82rem;color:var(--mut);margin-bottom:14px}
-.sumbox .code b{color:#b9a8ff}
+.sumbox .code b{color:var(--p)}
 .pays{display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--bd)}
-.pays span{background:#1d2150;border-radius:6px;padding:6px 10px;font-size:.78rem;font-weight:700;color:var(--mut)}
+.pays span{background:#efeafd;border-radius:6px;padding:6px 10px;font-size:.78rem;font-weight:700;color:var(--mut)}
 @media(max-width:1000px){.dgrid{grid-template-columns:1fr 1fr}.sumbox{grid-column:1/-1}.size-row{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.dgrid{grid-template-columns:1fr}.size .big{font-size:1.5rem}}
 
@@ -157,19 +158,19 @@ details[open] summary::after{content:'\2212'}
 details p{color:var(--mut);margin-top:12px;font-size:.94rem}
 
 /* cta + footer */
-.cta{background:linear-gradient(135deg,#3a24a8,#7c5cff);border-radius:24px;padding:56px 28px;text-align:center}
+.cta{background:linear-gradient(135deg,#6a3ae8,#9b7bff);border-radius:24px;padding:56px 28px;text-align:center}
 .cta h2{font-size:2.2rem;font-weight:800;margin-bottom:10px}
 .cta p{opacity:.85;margin-bottom:24px}
-.cta .btn{background:#fff;color:#2b1a85}
+.cta .btn{background:#fff;color:#4c2bb8}
 footer.site{border-top:1px solid var(--bd);padding:44px 0;color:var(--mut);font-size:.85rem}
 footer.site .wrap{display:flex;flex-direction:column;gap:14px}
 .foot-links{display:flex;gap:22px;flex-wrap:wrap}
 .foot-links a{text-decoration:none}
-.foot-links a:hover{color:#fff}
+.foot-links a:hover{color:var(--p)}
 .risk{font-size:.78rem;opacity:.75;max-width:900px}
 
 /* auth + payment modals */
-.overlay{position:fixed;inset:0;background:rgba(5,6,16,.72);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:1000;padding:16px}
+.overlay{position:fixed;inset:0;background:rgba(40,25,80,.45);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:1000;padding:16px}
 .overlay.active{display:flex}
 .modal{background:var(--card);border:1px solid var(--bd);border-radius:20px;width:100%;max-width:420px;padding:32px;position:relative;max-height:92vh;overflow-y:auto}
 .modal .x{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--mut);cursor:pointer;font-size:1.2rem}
@@ -180,49 +181,145 @@ footer.site .wrap{display:flex;flex-direction:column;gap:14px}
 .in{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:.95rem;font-family:inherit;outline:none}
 .in:focus{border-color:var(--p)}
 .msg{display:none;padding:10px 14px;border-radius:8px;font-size:.86rem;margin-bottom:14px;text-align:left}
-.msg.err{background:rgba(255,107,129,.12);color:var(--bad)}
-.msg.okm{background:rgba(34,211,166,.12);color:var(--ok)}
+.msg.err{background:rgba(224,64,90,.10);color:var(--bad)}
+.msg.okm{background:rgba(15,157,118,.10);color:var(--ok)}
 .auth-row{display:flex;justify-content:flex-end;margin-bottom:16px}
-.auth-row a{color:#b9a8ff;font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:none}
+.auth-row a{color:var(--p);font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:none}
 .auth-switch{text-align:center;margin-top:20px;font-size:.9rem;color:var(--mut)}
-.auth-switch a{color:#b9a8ff;font-weight:700;cursor:pointer;text-decoration:none}
+.auth-switch a{color:var(--p);font-weight:700;cursor:pointer;text-decoration:none}
 .pay{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;text-decoration:none;font-weight:700;margin-top:12px}
 .pay:hover{border-color:var(--p)}
 
 /* dashboard */
-.dash{display:grid;grid-template-columns:250px 1fr;min-height:100vh;background:var(--bg)}
-.side{background:var(--bg2);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
-.side .logo{padding:4px 10px 22px}
-.side a.nl{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--mut);text-decoration:none;font-weight:600;font-size:.93rem}
-.side a.nl:hover{background:var(--card);color:#fff}
-.side a.nl.on{background:var(--soft);color:#fff}
-.side a.nl.on .ico{color:var(--p)}
+.dapp{min-height:100vh;background:var(--bg2)}
+.dbar{position:sticky;top:0;z-index:300;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;height:64px;padding:0 22px;background:#fff;border-bottom:1px solid var(--bd)}
+.dbar .l{display:flex;align-items:center;gap:12px}
+.dbar .r{display:flex;justify-content:flex-end;align-items:center;gap:12px}
+.menu-btn{display:none;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:8px 10px;cursor:pointer}
+.avwrap{position:relative}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--p);color:#fff;border:none;font-weight:800;cursor:pointer}
+.avmenu{display:none;position:absolute;right:0;top:46px;min-width:220px;background:#fff;border:1px solid var(--bd);border-radius:12px;box-shadow:0 16px 40px rgba(76,29,149,.16);padding:8px;z-index:400}
+.avmenu.open{display:block}
+.avmenu .avemail{padding:8px 10px;font-size:.82rem;color:var(--mut);border-bottom:1px solid var(--bd);margin-bottom:6px;word-break:break-all}
+.avmenu a{display:block;padding:9px 10px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem}
+.avmenu a:hover{background:var(--soft);color:var(--p)}
+.dlay{display:grid;grid-template-columns:240px 1fr;gap:0;align-items:start}
+.side{position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:4px}
+.side .lab{font-size:.72rem;font-weight:700;color:var(--mut);letter-spacing:.06em;padding:4px 12px 10px}
+.side a.nl{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--mut);text-decoration:none;font-weight:600;font-size:.92rem}
+.side a.nl:hover{background:#fff;color:var(--tx)}
+.side a.nl.on{background:var(--soft);color:var(--p)}
+.side a.nl.sub{padding-left:46px;font-size:.88rem}
+.side a.nl .car{margin-left:auto;font-size:.8rem}
+.side .sep{height:14px}
 .side .grow{flex:1}
-.dmain{padding:28px 34px 60px;min-width:0}
-.dtop{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}
-.dtop h1{font-size:1.7rem;font-weight:800}
-.dtop .sub{color:var(--mut);font-size:.92rem}
-.menu-btn{display:none;background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:9px 12px;cursor:pointer}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
-.kpi{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px}
-.kpi span{color:var(--mut);font-size:.84rem;font-weight:600}
-.kpi b{display:block;font-family:'Sora';font-size:1.8rem;margin-top:4px}
-.panel{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:24px;margin-bottom:22px}
-.panel h2{font-size:1.1rem;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.empty{text-align:center;padding:38px 16px;color:var(--mut)}
-.empty .ei{width:54px;height:54px;border-radius:16px;background:var(--soft);color:#b9a8ff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.5rem}
+.side .promo-m{border:1px solid var(--bd);background:#fff;border-radius:12px;padding:14px;font-size:.82rem;color:var(--mut)}
+.side .promo-m b{display:block;color:var(--tx);font-size:.95rem;margin-bottom:2px}
+.dmain{background:#fff;border:1px solid var(--bd);border-radius:20px;margin:0 22px 22px 0;padding:26px 28px 40px;min-height:calc(100vh - 86px);min-width:0}
+.acc-grid{display:grid;grid-template-columns:1fr 300px;gap:24px}
+.ttabs{border-bottom:1px solid var(--bd);margin-bottom:18px;display:flex;gap:6px}
+.tt{padding:10px 14px;font-weight:700;font-size:.92rem;color:var(--mut)}
+.tt.on{color:var(--p);border-bottom:2px solid var(--p);margin-bottom:-1px}
+.filters{display:flex;gap:8px;margin-bottom:16px}
+.fp{border:1px solid var(--bd);background:#fff;color:var(--mut);padding:7px 16px;border-radius:8px;font-weight:700;font-size:.85rem;cursor:pointer}
+.fp.on{background:var(--p);border-color:var(--p);color:#fff}
+.empty-wrap{background:var(--bg2);border-radius:16px;padding:10px;margin-bottom:26px}
+.rec-h{font-size:1.05rem;margin-bottom:14px}
+.plan-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.plan{border:1px solid var(--bd);border-radius:16px;padding:20px;background:#fff;display:flex;flex-direction:column}
+.plan h4{font-family:'Sora';font-size:1.05rem;margin-bottom:4px}
+.plan .sz{color:var(--mut);font-size:.85rem;margin-bottom:14px}
+.plan .get{background:var(--soft);color:var(--p);border:none;border-radius:10px;padding:12px;font-weight:800;font-size:.9rem;cursor:pointer;margin-bottom:16px}
+.plan .get:hover{background:var(--p);color:#fff}
+.plan ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:.84rem;color:var(--mut)}
+.plan li{display:flex;gap:9px;align-items:flex-start}
+.plan li .ico{color:var(--ok);margin-top:3px;flex-shrink:0}
+.acc-side{display:flex;flex-direction:column;gap:16px}
+.rcard{border:1px solid var(--bd);border-radius:16px;padding:18px;background:#fff}
+.rcard h4{font-size:.95rem;margin-bottom:12px}
+.promo-card{background:linear-gradient(135deg,#6a3ae8,#a48bff);color:#fff;border:none}
+.promo-card h4{font-family:'Sora';font-size:1.2rem;line-height:1.25;margin-bottom:14px}
+.promo-card .code{display:inline-block;background:rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-weight:800;font-size:.85rem;margin-bottom:12px}
+.promo-card a{display:block;color:#fff;font-weight:700;font-size:.85rem;text-decoration:none}
+.week{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:2px}
+.week .wd span{display:block;font-size:.62rem;font-weight:700;color:var(--mut)}
+.week .wd b{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:50%;font-size:.88rem;margin-top:4px}
+.week .wd b.td{background:var(--p);color:#fff}
+.calc-ico{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.calc-ico a{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:12px;background:var(--bg2);text-decoration:none;font-size:.8rem;font-weight:700;color:var(--tx)}
+.calc-ico a:hover{background:var(--soft);color:var(--p)}
+.calc-ico .ico{font-size:1.4rem;color:var(--p)}
+.stabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--bd);margin-bottom:22px}
+.st{background:none;border:none;border-bottom:2px solid transparent;text-align:left;padding:6px 18px 14px;cursor:pointer;color:var(--mut)}
+.st span{display:block;font-size:.85rem;font-weight:600}
+.st b{display:block;font-family:'Sora';font-size:1.5rem;color:var(--tx);margin-top:2px}
+.st.on{border-bottom-color:var(--p)}
+.st.on span{color:var(--tx)}
+.banner{border-radius:18px;padding:34px;background:linear-gradient(120deg,#efe9ff,#dccfff);margin-bottom:20px}
+.banner h2{font-size:1.5rem;margin-bottom:6px}
+.banner p{color:var(--mut)}
+.ctabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--bd);margin-bottom:20px}
+.ctabs span{padding:10px 14px;font-size:.88rem;font-weight:700;color:var(--mut)}
+.ctabs span.on{color:var(--p);border-bottom:2px solid var(--p);margin-bottom:-1px}
+.ctabs em{font-style:normal;background:var(--bg2);border-radius:99px;padding:1px 8px;font-size:.75rem;margin-left:4px}
+.offer{max-width:360px;border:1px solid var(--bd);border-radius:16px;overflow:hidden;background:#fff}
+.offer .top{background:linear-gradient(135deg,#6a3ae8,#a48bff);color:#fff;padding:20px}
+.offer .top h3{font-family:'Sora';font-size:1.2rem;margin-bottom:6px}
+.offer .top p{font-size:.88rem;opacity:.92}
+.offer .bot{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;gap:10px}
+.offer .bot b{font-family:'Sora'}
+.page-h{font-size:1.3rem;margin-bottom:4px}
+.page-s{color:var(--mut);font-size:.9rem;margin-bottom:20px}
+.accts{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;padding:6px}
+.empty{text-align:center;padding:44px 16px;color:var(--mut)}
+.empty .ei{width:54px;height:54px;border-radius:16px;background:var(--soft);color:var(--p);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.5rem}
 .empty h3{color:var(--tx);font-size:1.05rem;margin-bottom:6px}
-.empty p{font-size:.9rem;max-width:380px;margin:0 auto 18px}
-.accts{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.empty p{font-size:.9rem;max-width:400px;margin:0 auto 18px}
+.panel{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:22px;margin-bottom:20px}
+.panel h2{font-size:1.05rem;margin-bottom:14px}
 .tbl{width:100%;border-collapse:collapse;font-size:.92rem}
 .tbl th{text-align:left;color:var(--mut);font-weight:700;font-size:.8rem;padding:10px 12px;border-bottom:1px solid var(--bd)}
 .tbl td{padding:13px 12px;border-bottom:1px solid var(--bd)}
 .tbl-wrap{overflow-x:auto}
-.rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.rule{background:var(--bg);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.rule{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:18px}
 .rule b{display:block;font-family:'Sora';font-size:1.5rem;margin-bottom:2px}
 .rule span{color:var(--mut);font-size:.85rem}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.calc-out{background:var(--bg2);border-radius:12px;padding:16px;margin-top:6px;font-size:.92rem;color:var(--mut)}
+.calc-out b{display:block;font-family:'Sora';font-size:1.6rem;color:var(--tx)}
 .scrim{display:none}
+
+
+/* checkout */
+.co{min-height:100vh;background:var(--bg2)}
+.co-bar{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 22px;background:#fff;border-bottom:1px solid var(--bd)}
+.co-wrap{max-width:1040px;margin:0 auto;padding:32px 22px 60px;display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+.co h1{font-size:1.6rem;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.co h1 a{color:var(--mut);text-decoration:none;font-size:1.3rem}
+.co .sec-l{font-weight:700;margin:22px 0 12px;font-size:.95rem}
+.methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.method{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:22px 16px 16px;text-align:center;cursor:pointer;color:var(--tx);font-family:inherit;transition:border-color .15s}
+.method:hover{border-color:#b9a3ff}
+.method.on{border-color:var(--p);box-shadow:0 0 0 1px var(--p);background:linear-gradient(160deg,#f1ebff,#fff)}
+.method[disabled]{opacity:.5;cursor:not-allowed}
+.method .mi{font-size:2rem;color:var(--p);height:46px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.method b{display:block;font-size:.95rem;border-top:1px solid var(--bd);padding-top:12px}
+.method small{display:block;color:var(--mut);font-size:.75rem;margin-top:2px}
+.osum{background:#fff;border:1px solid var(--bd);border-radius:18px;overflow:hidden;position:sticky;top:20px}
+.osum .hd{background:linear-gradient(135deg,#6a3ae8,#9b7bff);color:#fff;padding:20px 22px}
+.osum .hd h3{font-family:'Sora';font-size:1.15rem;margin-bottom:4px}
+.osum .hd div{font-size:.88rem;opacity:.92}
+.osum .bd{padding:18px 22px}
+.osum .rw{display:flex;justify-content:space-between;padding:8px 0;font-size:.9rem;color:var(--mut)}
+.osum .rw b{color:var(--tx)}
+.osum .tot{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--bd);margin-top:8px;padding-top:14px;font-weight:700}
+.osum .tot b{font-family:'Sora';font-size:1.6rem}
+.osum .agree{display:flex;gap:10px;align-items:flex-start;font-size:.8rem;color:var(--mut);margin:16px 0}
+.osum .agree input{margin-top:3px;accent-color:var(--p)}
+.osum .btn{width:100%;padding:14px}
+.osum .note{font-size:.78rem;color:var(--mut);margin-top:12px}
+@media(max-width:860px){.co-wrap{grid-template-columns:1fr}.osum{position:static}}
 
 @media(max-width:960px){
   .hero .wrap{grid-template-columns:1fr}
@@ -230,15 +327,21 @@ footer.site .wrap{display:flex;flex-direction:column;gap:14px}
   .steps{grid-template-columns:repeat(2,1fr)}
   .nav{display:none}
 }
+@media(max-width:1100px){.acc-grid{grid-template-columns:1fr}}
 @media(max-width:820px){
-  .dash{grid-template-columns:1fr}
-  .side{position:fixed;left:0;top:0;bottom:0;width:260px;z-index:900;transform:translateX(-100%);transition:transform .2s}
+  .dlay{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:260px;height:auto;background:#fff;z-index:900;transform:translateX(-100%);transition:transform .2s;padding-top:20px}
   .side.open{transform:none}
-  .scrim.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:850}
+  .scrim.open{display:block;position:fixed;inset:0;background:rgba(40,25,80,.45);z-index:850}
   .menu-btn{display:inline-block}
-  .dmain{padding:20px 16px 50px}
+  .dmain{margin:0 12px 16px;padding:20px 16px 40px;border-radius:16px}
+  .dbar{padding:0 14px;grid-template-columns:auto 1fr auto}
+  .stabs{grid-template-columns:1fr}
+  .st{padding-left:6px}
 }
 @media(max-width:640px){
+  .dbar>.btn{display:none}
+  .dbar{grid-template-columns:1fr auto}
   .stats .wrap{grid-template-columns:repeat(2,1fr)}
   .sel{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
@@ -272,6 +375,7 @@ footer.site .wrap{display:flex;flex-direction:column;gap:14px}
     <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
     <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></symbol>
     <symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 8h4.5a2 2 0 010 4H9m0 0h5a2 2 0 010 4H9M9 7v10M11 6v2M11 16v2"/></symbol>
   </defs>
 </svg>
@@ -389,7 +493,7 @@ function renderPicker(ctx) {
   $(ctx + '-price').textContent = s[1];
   $(ctx + '-price2').textContent = s[1];
   const b = $(ctx + '-btn'); b.textContent = p.cta;
-  b.onclick = () => checkout(s[0] + ' ' + p.name, STRIPE_LINKS[st.type + '-' + n] || '', NOW + s[2]);
+  b.onclick = () => checkout(s[0] + ' ' + p.name, STRIPE_LINKS[st.type + '-' + n] || '', NOW + s[2], { label: p.label, size: s[0], price: s[1] });
 }
 
 function siteHeader() {
@@ -473,27 +577,38 @@ function footerHTML() {
 }
 
 /* ---------- DASHBOARD ---------- */
-const DPAGES = [
-  ['overview','Overview','home'],['accounts','My accounts','wallet'],['new','New challenge','plus'],
-  ['payouts','Payouts','cash'],['rules','Trading rules','book'],['settings','Settings','user']
-];
-const DTITLE = { overview:['Overview','Your accounts at a glance.'], accounts:['My accounts','All the accounts you have bought.'], new:['New challenge','Pick a program and an account size.'], payouts:['Payouts','Your payout requests and history.'], rules:['Trading rules','Stay inside these limits on every account.'], settings:['Settings','Manage your login details.'] };
+const DNAV = [['accounts','Accounts','home'],['payout','Payout','wallet'],['refer','Refer & Earn','user'],['partner','Become a partner','layers'],['offers','My Offers','pie'],['competitions','Competitions','chart'],['certificates','Certificates','shield'],['transactions','Transactions','cash'],['help','Help & Support','info']];
+const DMORE = [['calculator','Calculator'],['rules','Trading rules'],['new','Buy a challenge']];
+const DPAGES = DNAV.map(x => x[0]).concat(DMORE.map(x => x[0]), ['settings']);
+let dFilter = 'active', dPayTab = 'eligible', moreOpen = false;
 
 function dashShell(page) {
-  const nav = DPAGES.map(p => '<a class="nl' + (p[0] === page ? ' on' : '') + '" href="#/dashboard/' + p[0] + '">' + ico(p[2]) + p[1] + '</a>').join('');
-  const t = DTITLE[page];
-  return '<div class="dash"><aside class="side" id="side"><a class="logo" href="#/">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></a>' + nav +
-    '<div class="grow"></div><a class="nl" href="#/">' + ico('monitor') + 'Back to site</a><a class="nl" href="#" onclick="doSignOut();return false">' + ico('out') + 'Sign out</a></aside>' +
+  const initial = esc((user.email || '?').charAt(0).toUpperCase());
+  const nav = DNAV.map(p => '<a class="nl' + (p[0] === page ? ' on' : '') + '" href="#/dashboard/' + p[0] + '">' + ico(p[2]) + p[1] + '</a>').join('');
+  const inMore = DMORE.some(m => m[0] === page);
+  const open = moreOpen || inMore;
+  const more = '<a class="nl" href="#" onclick="toggleMore();return false">' + ico('menu') + 'More<span class="car">' + (open ? '&#9652;' : '&#9662;') + '</span></a>' +
+    (open ? DMORE.map(m => '<a class="nl sub' + (m[0] === page ? ' on' : '') + '" href="#/dashboard/' + m[0] + '">' + m[1] + '</a>').join('') : '');
+  return '<div class="dapp"><header class="dbar"><div class="l"><button class="menu-btn" onclick="toggleSide()" aria-label="Menu">' + ico('menu') + '</button>' +
+    '<a class="logo" href="#/dashboard/accounts">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></a></div>' +
+    '<a class="btn btn-p btn-sm" href="#/dashboard/new">Start Challenge</a>' +
+    '<div class="r"><div class="avwrap"><button class="avatar" onclick="toggleAv(event)" aria-label="Account menu">' + initial + '</button>' +
+    '<div class="avmenu" id="avmenu"><div class="avemail">' + esc(user.email) + '</div><a href="#/dashboard/settings">Settings</a><a href="#/">Back to site</a><a href="#" onclick="doSignOut();return false">Sign out</a></div></div></div></header>' +
     '<div class="scrim" id="scrim" onclick="toggleSide()"></div>' +
-    '<main class="dmain"><div class="dtop"><div><h1>' + t[0] + '</h1><div class="sub">' + t[1] + '</div></div>' +
-    '<div style="display:flex;gap:10px;align-items:center"><button class="menu-btn" onclick="toggleSide()" aria-label="Menu">' + ico('menu') + '</button><a class="btn btn-p btn-sm" href="#/dashboard/new">' + ico('plus') + ' New challenge</a></div></div>' +
-    '<div id="dbody"></div></main></div>';
+    '<div class="dlay"><aside class="side" id="side"><div class="lab">MENUBAR</div>' + nav + more + '<div class="grow"></div>' +
+    '<div class="promo-m"><b>Code ' + PROMO + '</b>10% off for new users, 5% off for existing users.</div></aside>' +
+    '<main class="dmain" id="dbody"></main></div></div>';
 }
 function toggleSide() { $('side').classList.toggle('open'); $('scrim').classList.toggle('open'); }
+function toggleAv(e) { e.stopPropagation(); $('avmenu').classList.toggle('open'); }
+function toggleMore() { moreOpen = !moreOpen; route(); }
+function setFilter(f) { dFilter = f; route(); }
+function setPayTab(t) { dPayTab = t; route(); }
+document.addEventListener('click', () => { const m = $('avmenu'); if (m) m.classList.remove('open'); });
 
-function statusTag(s) {
+function statusTag(st) {
   const m = { active:'ok', funded:'ok', passed:'ok', paid:'ok', pending:'warn', breached:'bad', rejected:'bad' };
-  return '<span class="tag ' + (m[s] || '') + '">' + esc(s || 'unknown') + '</span>';
+  return '<span class="tag ' + (m[st] || '') + '">' + esc(st || 'unknown') + '</span>';
 }
 function emptyBlock(icon, title, text, btn) {
   return '<div class="empty"><div class="ei">' + ico(icon) + '</div><h3>' + title + '</h3><p>' + text + '</p>' + (btn || '') + '</div>';
@@ -504,52 +619,56 @@ function acctCard(a) {
   const prog = tgt ? Math.max(0, Math.min(100, pl / tgt * 100)) : 0;
   return '<div class="acct-card" style="box-shadow:none"><div class="acct-top"><b>' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + (a.phase ? ' &middot; ' + esc(a.phase) : '') + '</b>' + statusTag(a.status) + '</div>' +
     '<div class="acct-size" style="font-size:2rem">' + money(size) + '</div><div class="acct-sub">Balance ' + money(bal) + '</div>' +
-    (tgt ? '<div class="lbl" style="margin-bottom:0">Profit target ' + tgt + '%</div><div class="bar"><i style="width:' + prog.toFixed(0) + '%"></i></div>' : '') +
+    (tgt ? '<div class="lbl" style="margin-bottom:0;font-size:.8rem;color:var(--mut)">Profit target ' + tgt + '%</div><div class="bar"><i style="width:' + prog.toFixed(0) + '%"></i></div>' : '') +
     '<div class="kv"><span>Profit / loss</span><b style="color:' + (pl >= 0 ? 'var(--ok)' : 'var(--bad)') + '">' + (pl >= 0 ? '+' : '') + pl.toFixed(2) + '%</b></div>' +
     '<div class="kv"><span>Daily / max loss</span><b>5% / 10%</b></div></div>';
 }
-function payoutTable() {
-  if (!data.payouts.length) return emptyBlock('cash', 'No payouts yet', 'Payouts appear here after your funded account makes a profit.');
+function buyPlan(type, idx) {
+  const p = PLANS[type], s2 = p.sizes[idx], n = sizeNum(s2[0]);
+  checkout(s2[0] + ' ' + p.name, STRIPE_LINKS[type + '-' + n] || '', NOW + s2[2], { label: p.label, size: s2[0], price: s2[1] });
+}
+function recPlans() {
+  const items = [['challenge', 2], ['challenge', 4], ['instant', 2]];
+  const pts = { challenge: ['8% then 5% profit targets', '5% daily and 10% max loss', 'cTrader platform'], instant: ['No evaluation', '80% profit split', '5% daily and 10% max loss'] };
+  return items.map(it => {
+    const p = PLANS[it[0]], s2 = p.sizes[it[1]];
+    return '<div class="plan"><h4>' + p.label + '</h4><div class="sz">Account size: ' + sizeShort(sizeNum(s2[0])) + '</div>' +
+      '<button class="get" onclick="buyPlan(\'' + it[0] + '\',' + it[1] + ')">Get Plan - ' + s2[1] + '</button>' +
+      '<ul>' + pts[it[0]].map(t => '<li>' + ico('check') + t + '</li>').join('') + '</ul></div>';
+  }).join('');
+}
+function weekStrip() {
+  const d = new Date(), start = new Date(d); start.setDate(d.getDate() - d.getDay());
+  const names = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  return '<div class="week">' + names.map((n, i) => {
+    const x = new Date(start); x.setDate(start.getDate() + i);
+    const td = x.toDateString() === d.toDateString();
+    return '<div class="wd"><span>' + (td ? 'TODAY' : n) + '</span><b class="' + (td ? 'td' : '') + '">' + x.getDate() + '</b></div>';
+  }).join('') + '</div>';
+}
+function accountsPage() {
+  const br = dFilter === 'breached';
+  const list = data.accounts.filter(a => br ? a.status === 'breached' : a.status !== 'breached');
+  const body = list.length ? '<div class="accts">' + list.map(acctCard).join('') + '</div>' :
+    emptyBlock('wallet', br ? 'No breached accounts' : "You don't have any accounts yet", br ? 'Accounts that break a loss rule will be listed here.' : 'Show your trading skills. Pass the evaluation and get a funded account.', br ? '' : '<a class="btn btn-p btn-sm" href="#/dashboard/new">Start Challenge</a>');
+  return '<div class="acc-grid"><div><div class="ttabs"><span class="tt on">CFDs</span></div>' +
+    '<div class="filters"><button class="fp' + (!br ? ' on' : '') + '" onclick="setFilter(\'active\')">Active</button><button class="fp' + (br ? ' on' : '') + '" onclick="setFilter(\'breached\')">Breached</button></div>' +
+    '<div class="empty-wrap">' + body + '</div><h3 class="rec-h">Recommended plans</h3><div class="plan-cards">' + recPlans() + '</div></div>' +
+    '<aside class="acc-side">' +
+      '<div class="rcard promo-card"><h4>Skip the challenge. Start funded.</h4><div class="code">' + PROMO + '</div><a href="#/dashboard/new" onclick="setTimeout(function(){setType(\'dash\',\'instant\')},0)">See Instant Funding &rsaquo;</a></div>' +
+      '<div class="rcard"><h4>This week</h4>' + weekStrip() + '</div>' +
+      '<div class="rcard"><h4>Calculator</h4><div class="calc-ico"><a href="#/dashboard/calculator">' + ico('calc') + 'Lot size</a><a href="#/dashboard/calculator">' + ico('chart') + 'Profit / loss</a></div></div>' +
+    '</aside></div>';
+}
+
+function payoutTable(rows) {
   return '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead><tbody>' +
-    data.payouts.map(p => '<tr><td>' + esc(p.created_at ? new Date(p.created_at).toLocaleDateString() : '-') + '</td><td>' + money(p.amount) + '</td><td>' + esc(p.method || '-') + '</td><td>' + statusTag(p.status) + '</td></tr>').join('') + '</tbody></table></div>';
+    rows.map(p => '<tr><td>' + esc(p.created_at ? new Date(p.created_at).toLocaleDateString() : '-') + '</td><td>' + money(p.amount) + '</td><td>' + esc(p.method || '-') + '</td><td>' + statusTag(p.status) + '</td></tr>').join('') + '</tbody></table></div>';
 }
-const newBtn = '<a class="btn btn-p btn-sm" href="#/dashboard/new">Buy a challenge</a>';
-
-function dashBody(page) {
-  const act = data.accounts.filter(a => a.status === 'active' || a.status === 'passed').length;
-  const fund = data.accounts.filter(a => a.status === 'funded').length;
-  const paid = data.payouts.filter(p => p.status === 'paid').reduce((s, p) => s + Number(p.amount || 0), 0);
-  if (page === 'overview') {
-    return '<div class="kpis"><div class="kpi"><span>Accounts</span><b>' + data.accounts.length + '</b></div><div class="kpi"><span>In evaluation</span><b>' + act + '</b></div><div class="kpi"><span>Funded</span><b>' + fund + '</b></div><div class="kpi"><span>Total paid out</span><b>' + money(paid) + '</b></div></div>' +
-      '<div class="panel"><h2>Your accounts <a class="btn btn-g btn-sm" href="#/dashboard/accounts">View all</a></h2>' +
-      (data.accounts.length ? '<div class="accts">' + data.accounts.slice(0, 3).map(acctCard).join('') + '</div>' : emptyBlock('wallet', 'No accounts yet', 'Buy a challenge or an instant account and it will show up here.', newBtn)) + '</div>' +
-      '<div class="panel"><h2>Recent payouts <a class="btn btn-g btn-sm" href="#/dashboard/payouts">View all</a></h2>' + payoutTable() + '</div>';
-  }
-  if (page === 'accounts') {
-    return '<div class="panel">' + (data.accounts.length ? '<div class="accts">' + data.accounts.map(acctCard).join('') + '</div>' : emptyBlock('wallet', 'No accounts yet', 'Buy a challenge or an instant account and it will show up here.', newBtn)) + '</div>';
-  }
-  if (page === 'new') return pickerHTML('dash');
-  if (page === 'payouts') return payoutForm() + '<div class="panel"><h2>Payout history</h2>' + payoutTable() + '</div>';
-  if (page === 'rules') {
-    return '<div class="panel"><h2>Loss limits (all accounts)</h2><div class="rule-grid"><div class="rule"><b>5%</b><span>Daily loss limit</span></div><div class="rule"><b>10%</b><span>Max loss limit</span></div></div></div>' +
-      '<div class="panel"><h2>Evaluation Challenge</h2><div class="rule-grid"><div class="rule"><b>8%</b><span>Phase 1 profit target</span></div><div class="rule"><b>5%</b><span>Phase 2 profit target</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>' +
-      '<div class="panel"><h2>Instant Funding</h2><div class="rule-grid"><div class="rule"><b>None</b><span>Evaluation</span></div><div class="rule"><b>80%</b><span>Profit split</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>';
-  }
-  if (page === 'settings') {
-    return '<div class="panel" style="max-width:520px"><h2>Login details</h2>' +
-      '<div class="field"><label>Email address</label><input class="in" value="' + esc(user.email) + '" disabled></div>' +
-      '<div class="msg err" id="pwErr"></div><div class="msg okm" id="pwOk"></div>' +
-      '<div class="field"><label for="newPw">New password</label><input type="password" id="newPw" class="in" placeholder="At least 6 characters" autocomplete="new-password"></div>' +
-      '<button class="btn btn-p btn-sm" onclick="changePw()">Update password</button></div>';
-  }
-  return '';
-}
-
-
 function payoutForm() {
   const funded = data.accounts.filter(a => a.status === 'funded');
-  if (!funded.length) return '<div class="panel"><h2>Request a payout</h2>' + emptyBlock('cash', 'No funded account yet', 'You can request a payout once one of your accounts is funded.') + '</div>';
-  return '<div class="panel" style="max-width:560px"><h2>Request a payout</h2>' +
+  if (!funded.length) return emptyBlock('cash', 'No eligible accounts for payout yet', 'Once you meet the payout criteria, your eligible accounts will be listed here.');
+  return '<div style="max-width:560px"><h3 class="rec-h">Request a payout</h3>' +
     '<div class="msg err" id="poErr"></div><div class="msg okm" id="poOk"></div>' +
     '<div class="field"><label for="poAcct">Funded account</label><select id="poAcct" class="in">' + funded.map(a => '<option value="' + esc(a.id) + '">' + money(a.size) + ' &middot; balance ' + money(a.balance) + '</option>').join('') + '</select></div>' +
     '<div class="field"><label for="poAmt">Amount (USD)</label><input id="poAmt" type="number" min="1" step="0.01" class="in" placeholder="0.00"></div>' +
@@ -567,9 +686,99 @@ async function requestPayout() {
   const { error } = await sb.from('payouts').insert({ user_id: user.id, account_id: $('poAcct').value, amount, method: $('poMethod').value, details: det, status: 'pending' });
   $('poBtn').disabled = false;
   if (error) { er.textContent = 'Could not send the request: ' + error.message; er.style.display = 'block'; return; }
-  data.loaded = false; await loadData(); data.loaded = true;
-  $('dbody').innerHTML = dashBody('payouts');
-  $('poOk') && ($('poOk').textContent = 'Request sent. We will review it soon.', $('poOk').style.display = 'block');
+  await loadData(); dPayTab = 'requested'; route();
+}
+function payoutPage() {
+  const funded = data.accounts.filter(a => a.status === 'funded');
+  const elig = funded.reduce((t, a) => t + Math.max(0, (Number(a.balance) || 0) - (Number(a.size) || 0)), 0);
+  const req = data.payouts.filter(p => p.status === 'pending').reduce((t, p) => t + Number(p.amount || 0), 0);
+  const paid = data.payouts.filter(p => p.status === 'paid').reduce((t, p) => t + Number(p.amount || 0), 0);
+  const tabs = [['eligible', 'Eligible profit', elig], ['requested', 'Requested payouts', req], ['disbursed', 'Disbursed amount', paid]]
+    .map(t => '<button class="st' + (dPayTab === t[0] ? ' on' : '') + '" onclick="setPayTab(\'' + t[0] + '\')"><span>' + t[1] + '</span><b>' + money(t[2]) + '</b></button>').join('');
+  let body;
+  if (dPayTab === 'eligible') body = payoutForm();
+  else {
+    const rows = data.payouts.filter(p => dPayTab === 'requested' ? p.status === 'pending' : p.status === 'paid');
+    body = rows.length ? payoutTable(rows) : emptyBlock('cash', dPayTab === 'requested' ? 'No requested payouts' : 'Nothing paid out yet', 'Your payouts will be listed here.');
+  }
+  return '<div class="stabs">' + tabs + '</div>' + body;
+}
+
+const FAQ_ITEMS = [
+  ['What is the difference between Challenge and Instant Funding?', 'The challenge has an evaluation with profit targets before you are funded. Instant Funding gives you a funded account with no evaluation.'],
+  ['What are the loss rules?', 'The daily loss limit is 5% and the maximum loss limit is 10% on every account.'],
+  ['Which platform do you use?', 'All accounts trade on cTrader.'],
+  ['How do I pay?', 'You can pay by card (Stripe) or with crypto (NOWPayments).'],
+  ['How do I get paid?', 'Open Payout in the menu, choose your funded account and send a request with your wallet or bank details.']
+];
+function calcLot() {
+  const g = id => parseFloat($(id).value) || 0;
+  const bal = g('cBal'), risk = g('cRisk'), sl = g('cSl'), pv = g('cPv');
+  const lots = (sl > 0 && pv > 0) ? (bal * risk / 100) / (sl * pv) : 0;
+  $('cLotOut').innerHTML = '<span>Position size</span><b>' + lots.toFixed(2) + ' lots</b><span>Risk: ' + money(bal * risk / 100) + '</span>';
+}
+function calcPl() {
+  const g = id => parseFloat($(id).value) || 0;
+  const v = g('pLots') * g('pPips') * g('pPv');
+  $('cPlOut').innerHTML = '<span>Result</span><b style="color:' + (v >= 0 ? 'var(--ok)' : 'var(--bad)') + '">' + (v >= 0 ? '+' : '') + money(v) + '</b>';
+}
+function copyCode() {
+  try { navigator.clipboard.writeText(PROMO); } catch (e) {}
+  const b = $('copyBtn'); if (b) { b.textContent = 'Copied'; setTimeout(() => { b.textContent = 'Copy code'; }, 1500); }
+}
+
+function dashBody(page) {
+  if (page === 'accounts') return accountsPage();
+  if (page === 'payout') return payoutPage();
+  if (page === 'new') return '<h2 class="page-h">Start a challenge</h2><p class="page-s">Pick a program and an account size.</p>' + pickerHTML('dash');
+  if (page === 'refer') return '<h2 class="page-h">Refer &amp; Earn</h2>' + emptyBlock('user', 'Referral program coming soon', 'We will announce how rewards work before it opens. Nothing to do for now.');
+  if (page === 'partner') return '<h2 class="page-h">Become a partner</h2>' + emptyBlock('layers', 'Partner program coming soon', 'Partner details will be shared here once the program is ready.');
+  if (page === 'competitions') return '<h2 class="page-h">Competitions</h2>' + emptyBlock('chart', 'No competitions right now', 'When a competition opens, you can join it from this page.');
+  if (page === 'offers') return '<h2 class="page-h">My Offers</h2><p class="page-s">Available offers</p>' +
+    '<div class="offer"><div class="top"><h3>Launch discount</h3><p>10% off for new users and 5% off for existing users on any plan.</p></div><div class="bot"><b>' + PROMO + '</b><button class="btn btn-p btn-sm" id="copyBtn" onclick="copyCode()">Copy code</button></div></div>';
+  if (page === 'certificates') {
+    const tabs = ['All Certificates', 'Payout', 'Competition'].map((t, i) => '<span class="' + (i === 0 ? 'on' : '') + '">' + t + '<em>0</em></span>').join('');
+    return '<div class="banner"><h2>Certificates</h2><p>Unlock certificates to prove your trading skills.</p></div><div class="ctabs">' + tabs + '</div>' +
+      emptyBlock('shield', 'No certificates yet', 'Your certificates will show up here when you reach a milestone.');
+  }
+  if (page === 'transactions') {
+    return '<h2 class="page-h">Transactions</h2><p class="page-s">Accounts added to your profile.</p>' + (data.accounts.length ?
+      '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Program</th><th>Account size</th><th>Status</th></tr></thead><tbody>' +
+      data.accounts.map(a => '<tr><td>' + esc(a.created_at ? new Date(a.created_at).toLocaleDateString() : '-') + '</td><td>' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + '</td><td>' + money(a.size) + '</td><td>' + statusTag(a.status) + '</td></tr>').join('') + '</tbody></table></div>'
+      : emptyBlock('cash', 'No transactions yet', 'Your purchases will be listed here once your account is added.'));
+  }
+  if (page === 'help') {
+    return '<h2 class="page-h">Help &amp; Support</h2><p class="page-s">Quick answers to common questions.</p><div style="max-width:760px">' +
+      FAQ_ITEMS.map(f => '<details><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>').join('') + '</div>';
+  }
+  if (page === 'calculator') {
+    return '<h2 class="page-h">Calculator</h2><p class="page-s">Quick risk tools for your trades.</p><div class="calc-grid">' +
+      '<div class="panel"><h2>Lot size</h2>' +
+      '<div class="field"><label>Account balance ($)</label><input id="cBal" class="in" type="number" value="10000" oninput="calcLot()"></div>' +
+      '<div class="field"><label>Risk per trade (%)</label><input id="cRisk" class="in" type="number" step="0.1" value="1" oninput="calcLot()"></div>' +
+      '<div class="field"><label>Stop loss (pips)</label><input id="cSl" class="in" type="number" value="20" oninput="calcLot()"></div>' +
+      '<div class="field"><label>Pip value per 1 lot ($)</label><input id="cPv" class="in" type="number" step="0.01" value="10" oninput="calcLot()"></div>' +
+      '<div class="calc-out" id="cLotOut"></div></div>' +
+      '<div class="panel"><h2>Profit / loss</h2>' +
+      '<div class="field"><label>Lots</label><input id="pLots" class="in" type="number" step="0.01" value="1" oninput="calcPl()"></div>' +
+      '<div class="field"><label>Pips gained (negative for a loss)</label><input id="pPips" class="in" type="number" value="20" oninput="calcPl()"></div>' +
+      '<div class="field"><label>Pip value per 1 lot ($)</label><input id="pPv" class="in" type="number" step="0.01" value="10" oninput="calcPl()"></div>' +
+      '<div class="calc-out" id="cPlOut"></div></div></div>';
+  }
+  if (page === 'rules') {
+    return '<h2 class="page-h">Trading rules</h2><p class="page-s">Stay inside these limits on every account.</p>' +
+      '<div class="panel"><h2>Loss limits (all accounts)</h2><div class="rule-grid"><div class="rule"><b>5%</b><span>Daily loss limit</span></div><div class="rule"><b>10%</b><span>Max loss limit</span></div></div></div>' +
+      '<div class="panel"><h2>Evaluation Challenge</h2><div class="rule-grid"><div class="rule"><b>8%</b><span>Phase 1 profit target</span></div><div class="rule"><b>5%</b><span>Phase 2 profit target</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>' +
+      '<div class="panel"><h2>Instant Funding</h2><div class="rule-grid"><div class="rule"><b>None</b><span>Evaluation</span></div><div class="rule"><b>80%</b><span>Profit split</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>';
+  }
+  if (page === 'settings') {
+    return '<h2 class="page-h">Settings</h2><p class="page-s">Manage your login details.</p><div class="panel" style="max-width:520px">' +
+      '<div class="field"><label>Email address</label><input class="in" value="' + esc(user.email) + '" disabled></div>' +
+      '<div class="msg err" id="pwErr"></div><div class="msg okm" id="pwOk"></div>' +
+      '<div class="field"><label for="newPw">New password</label><input type="password" id="newPw" class="in" placeholder="At least 6 characters" autocomplete="new-password"></div>' +
+      '<button class="btn btn-p btn-sm" onclick="changePw()">Update password</button></div>';
+  }
+  return '';
 }
 
 async function loadData() {
@@ -594,6 +803,33 @@ async function changePw() {
   else { ok.textContent = 'Password updated.'; ok.style.display = 'block'; $('newPw').value = ''; }
 }
 
+/* ---------- CHECKOUT ---------- */
+let coMethod = '';
+function checkoutHTML() {
+  const m = pending.meta || {};
+  const hasCard = !!pending.stripe;
+  const card = '<button class="method' + (coMethod === 'card' ? ' on' : '') + '"' + (hasCard ? '' : ' disabled') + ' onclick="setMethod(\'card\')"><div class="mi">' + ico('wallet') + '</div><b>Card</b><small>' + (hasCard ? 'Secure page by Stripe' : 'Not available for this account yet') + '</small></button>';
+  const cry = '<button class="method' + (coMethod === 'crypto' ? ' on' : '') + '" onclick="setMethod(\'crypto\')"><div class="mi">' + ico('coin') + '</div><b>Crypto</b><small>Via NOWPayments</small></button>';
+  return '<div class="co"><div class="co-bar"><a class="logo" href="#/">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></a><a class="btn btn-g btn-sm" href="#/dashboard/accounts">Dashboard</a></div>' +
+    '<div class="co-wrap"><div><h1><a href="#/" onclick="history.length>1?history.back():(location.hash=\'#/\');return false" aria-label="Back">&lsaquo;</a>Payments</h1>' +
+    '<div class="sec-l">Choose how to pay</div><div class="methods">' + card + cry + '</div>' +
+    '<p id="coMsg" class="msg okm" style="margin-top:20px"></p></div>' +
+    '<aside class="osum"><div class="hd"><h3>' + esc(pending.name) + '</h3><div>' + esc(m.label || '') + '</div><div>Account size: ' + esc(m.size || '') + '</div></div>' +
+    '<div class="bd"><div class="rw"><span>1 account</span><b>' + esc(m.price || '') + '</b></div><div class="rw"><span>Trading platform</span><b>cTrader</b></div><div class="rw"><span>Daily / max loss</span><b>5% / 10%</b></div>' +
+    '<div class="tot"><span>Total</span><b>' + esc(m.price || '') + '</b></div>' +
+    '<label class="agree"><input type="checkbox" id="coAgree" onchange="updateCo()"><span>I agree to the Terms of Service and the challenge rules.</span></label>' +
+    '<button class="btn btn-p" id="coGo" onclick="goPay()" disabled>Continue</button>' +
+    '<p class="note">Discount codes such as ' + PROMO + ' are entered on the card payment page.</p></div></aside></div></div>';
+}
+function setMethod(k) { coMethod = k; document.querySelectorAll('.method').forEach((el, i) => el.classList.toggle('on', (i === 0 ? 'card' : 'crypto') === k)); updateCo(); }
+function updateCo() { $('coGo').disabled = !(coMethod && $('coAgree').checked); }
+function goPay() {
+  const url = coMethod === 'card' ? pending.stripe : pending.crypto;
+  if (!url) return;
+  window.open(url, '_blank', 'noopener');
+  const m = $('coMsg'); m.textContent = 'Finish your payment in the new tab. Your account is added to your dashboard after we confirm the payment.'; m.style.display = 'block';
+}
+
 /* ---------- ROUTER ---------- */
 let authReady = false;
 async function route() {
@@ -602,13 +838,24 @@ async function route() {
   if (h.startsWith('#/dashboard')) {
     if (!authReady) { app.innerHTML = ''; return; }
     if (!user) { location.hash = '#/'; openAuth(false); return; }
-    const page = (h.split('/')[2] || 'overview');
-    const pg = DTITLE[page] ? page : 'overview';
+    let page = (h.split('/')[2] || 'accounts');
+    if (page === 'overview') page = 'accounts';
+    const pg = DPAGES.indexOf(page) >= 0 ? page : 'accounts';
     app.innerHTML = dashShell(pg);
     window.scrollTo(0, 0);
-    if (!data.loaded) { $('dbody').innerHTML = '<div class="panel"><div class="empty"><p>Loading your data...</p></div></div>'; await loadData(); }
+    if (!data.loaded) { $('dbody').innerHTML = '<div class="empty"><p>Loading your data...</p></div>'; await loadData(); }
     $('dbody').innerHTML = dashBody(pg);
     if (pg === 'new') renderPicker('dash');
+    if (pg === 'calculator') { calcLot(); calcPl(); }
+    return;
+  }
+  if (h.startsWith('#/checkout')) {
+    if (!authReady) { app.innerHTML = ''; return; }
+    if (!pending) { location.hash = '#/'; return; }
+    if (!user) { location.hash = '#/'; openAuth(true); return; }
+    coMethod = '';
+    app.innerHTML = checkoutHTML();
+    window.scrollTo(0, 0);
     return;
   }
   app.innerHTML = homeHTML();
@@ -645,7 +892,7 @@ function closeAuth() { $('authModal').classList.remove('active'); clearMsgs(); }
 function afterLogin() {
   closeAuth();
   data = { accounts: [], payouts: [], loaded: false };
-  if (pending) { openPay(pending.name, pending.stripe, pending.crypto); renderHdr(); }
+  if (pending) { renderHdr(); location.hash = '#/checkout'; }
   else if (!(location.hash || '').startsWith('#/dashboard')) location.hash = '#/dashboard';
   else route();
 }
@@ -691,9 +938,9 @@ async function doSignOut() {
 }
 
 /* ---------- PAYMENT ---------- */
-function checkout(name, stripe, crypto) {
-  pending = { name, stripe, crypto };
-  if (user) openPay(name, stripe, crypto); else openAuth(true);
+function checkout(name, stripe, crypto, meta) {
+  pending = { name, stripe, crypto, meta: meta || {} };
+  if (user) location.hash = '#/checkout'; else openAuth(true);
 }
 function openPay(name, stripe, crypto) {
   $('payTitle').textContent = name;
