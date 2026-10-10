@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="light">
+    <title>SMC | Smart Money Concepts Prop Firm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+:root{--bg-main:#f8fafc;--bg-card:#ffffff;--bg-card-hover:#f1f5f9;--primary-purple:#7c3aed;--primary-purple-hover:#6d28d9;--purple-glow:rgba(124,58,237,.2);--text-main:#0f172a;--text-muted:#64748b;--border-color:#e2e8f0}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
+body{background-color:var(--bg-main);color:var(--text-main);overflow-x:hidden;line-height:1.6}
+.top-bar{background:var(--primary-purple);color:#fff;text-align:center;padding:8px 20px;font-size:.85rem;font-weight:600}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 6%;position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);z-index:100;border-bottom:1px solid var(--border-color)}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.5rem;font-weight:800;color:var(--text-main)}
+.logo span{color:var(--primary-purple)}
+.nav-links{display:flex;gap:25px;list-style:none;align-items:center}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:.95rem;font-weight:500;transition:.2s}
+.nav-links a:hover{color:var(--primary-purple)}
+.auth-buttons{display:flex;gap:15px;align-items:center}
+.signin-link{color:var(--text-main);font-weight:600;text-decoration:none;font-size:.95rem;cursor:pointer}
+.signin-link:hover{color:var(--primary-purple)}
+.cta-btn{background:var(--primary-purple);color:#fff;padding:10px 22px;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none;transition:.3s ease;box-shadow:0 4px 12px var(--purple-glow);border:none;cursor:pointer}
+.cta-btn:hover{background:var(--primary-purple-hover);transform:translateY(-2px)}
+.hero{padding:70px 6% 40px;text-align:center;max-width:900px;margin:0 auto}
+.hero h1{font-size:3.2rem;font-weight:800;line-height:1.15;margin-bottom:20px;color:var(--text-main)}
+.hero h1 span{color:var(--primary-purple)}
+.hero p{font-size:1.15rem;color:var(--text-muted);margin-bottom:30px}
+.pricing-section{padding:60px 6%;max-width:1200px;margin:0 auto}
+.section-title{text-align:center;margin-bottom:40px}
+.section-title h2{font-size:2.2rem;font-weight:800;color:var(--text-main)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px}
+.pricing-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:35px 30px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 20px rgba(0,0,0,.03);transition:.3s ease}
+.pricing-card:hover{border-color:var(--primary-purple);transform:translateY(-4px);box-shadow:0 10px 30px rgba(124,58,237,.08)}
+.pricing-card.featured{border:2px solid var(--primary-purple);position:relative}
+.popular-tag{position:absolute;top:-12px;right:25px;background:var(--primary-purple);color:#fff;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:6px;text-transform:uppercase}
+.account-size{font-size:2.3rem;font-weight:800;color:var(--text-main);margin:10px 0}
+.card-features{list-style:none;margin:20px 0;border-top:1px solid var(--border-color);padding-top:15px}
+.card-features li{display:flex;justify-content:space-between;padding:8px 0;color:var(--text-muted);font-size:.95rem}
+.card-features li span{color:var(--text-main);font-weight:600}
+.price-tag{font-size:1.8rem;font-weight:800;color:var(--primary-purple);margin-bottom:15px}
+.card-btn{width:100%;padding:14px;background:var(--bg-main);color:var(--text-main);border:1px solid var(--border-color);border-radius:10px;font-weight:700;cursor:pointer;font-size:.95rem;transition:.3s ease}
+.pricing-card.featured .card-btn,.card-btn:hover{background:var(--primary-purple);color:#fff;border-color:var(--primary-purple);box-shadow:0 4px 12px var(--purple-glow)}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,.6);backdrop-filter:blur(5px);display:none;justify-content:center;align-items:center;z-index:1000}
+.modal-overlay.active{display:flex}
+.modal-box{background:var(--bg-card);border:1px solid var(--border-color);width:90%;max-width:420px;border-radius:20px;padding:30px;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.1)}
+.close-modal{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer}
+.payment-options{display:flex;flex-direction:column;gap:12px;margin-top:15px}
+.payment-link-btn{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg-main);border:1px solid var(--border-color);border-radius:10px;color:var(--text-main);text-decoration:none;font-weight:600;transition:.2s;cursor:pointer}
+.payment-link-btn:hover{border-color:var(--primary-purple);background:rgba(124,58,237,.03)}
+footer{text-align:center;padding:40px 6%;color:var(--text-muted);border-top:1px solid var(--border-color);font-size:.9rem;background:var(--bg-card)}
+@media(max-width:800px){.nav-links{display:none}.hero h1{font-size:2.3rem}}
+
+.auth-input{width:100%;padding:12px;border:1px solid var(--border-color);border-radius:8px;font-size:.95rem;margin-bottom:12px;outline:none}
+.auth-input:focus{border-color:var(--primary-purple)}
+.error-msg{color:#dc2626;font-size:.85rem;margin-bottom:10px;display:none}
+.success-msg{color:#16a34a;font-size:.85rem;margin-bottom:10px;display:none}
+.ico{width:1.2em;height:1.2em;vertical-align:-.125em;display:inline-block}
+</style>
+</head>
+<body>
+
+    <div class="top-bar">
+        Use Code <strong>SMC10</strong>: 10% OFF New Users | 5% OFF Existing Users
+    </div>
+
+    <header>
+        <div class="logo">
+            <svg class="ico" style="color: var(--primary-purple);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+            SMC<span>PROPFIRM</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#challenges">Challenges</a></li>
+            <li><a href="#instant">Instant Funding</a></li>
+            <li><a href="#">Trading Objectives</a></li>
+            <li><a href="#">FAQs</a></li>
+        </ul>
+        <div class="auth-buttons" id="headerAuthArea">
+            <a href="javascript:void(0)" class="signin-link" onclick="openAuthModal(false)">Sign In</a>
+            <a href="#challenges" class="cta-btn">Buy Challenge</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Turn your trading skills into <span>income</span></h1>
+        <p>Join thousands of traders in the world's leading firm. Trade in a fully simulated environment with raw spreads.</p>
+    </section>
+
+    <section class="pricing-section" id="challenges">
+        <div class="section-title"><h2>Evaluation Challenges</h2></div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$2,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$29</div>
+                <button class="card-btn" onclick="prepareCheckout('$2,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=4398622033')">Buy Challenge</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$5,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$59</div>
+                <button class="card-btn" onclick="prepareCheckout('$5,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=4398622033')">Buy Challenge</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$10,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$99</div>
+                <button class="card-btn" onclick="prepareCheckout('$10,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=4398622033')">Buy Challenge</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$15,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$139</div>
+                <button class="card-btn" onclick="prepareCheckout('$15,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=4398622033')">Buy Challenge</button>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="popular-tag">Most Popular</div>
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$50,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$299</div>
+                <button class="card-btn" onclick="prepareCheckout('$50,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5163043336')">Buy Challenge</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$100,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$499</div>
+                <button class="card-btn" onclick="prepareCheckout('$100,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5724610520')">Buy Challenge</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$150,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$679</div>
+                <button class="card-btn" onclick="prepareCheckout('$150,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5724610520')">Buy Challenge</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>SMC Challenge</h3>
+                <div class="account-size">$200,000</div>
+                <ul class="card-features">
+                    <li>Profit Target <span>8% / 5%</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Platform <span>cTrader</span></li>
+                </ul>
+                <div class="price-tag">$899</div>
+                <button class="card-btn" onclick="prepareCheckout('$200,000 Challenge', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5724610520')">Buy Challenge</button>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="pricing-section" id="instant">
+        <div class="section-title"><h2>Instant Funding</h2></div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$2,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$49</div>
+                <button class="card-btn" onclick="prepareCheckout('$2,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5320986875')">Buy Instant</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$5,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$89</div>
+                <button class="card-btn" onclick="prepareCheckout('$5,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5320986875')">Buy Instant</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$10,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$149</div>
+                <button class="card-btn" onclick="prepareCheckout('$10,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5320986875')">Buy Instant</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$15,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$199</div>
+                <button class="card-btn" onclick="prepareCheckout('$15,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=5320986875')">Buy Instant</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$50,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$399</div>
+                <button class="card-btn" onclick="prepareCheckout('$50,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=6114767314')">Buy Instant</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$100,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$699</div>
+                <button class="card-btn" onclick="prepareCheckout('$100,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=6165027996')">Buy Instant</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$150,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$999</div>
+                <button class="card-btn" onclick="prepareCheckout('$150,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=6165027996')">Buy Instant</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Instant Funded</h3>
+                <div class="account-size">$200,000</div>
+                <ul class="card-features">
+                    <li>Evaluation <span>None</span></li>
+                    <li>Daily / Max Loss <span>5% / 10%</span></li>
+                    <li>Profit Split <span>80%</span></li>
+                </ul>
+                <div class="price-tag">$1,299</div>
+                <button class="card-btn" onclick="prepareCheckout('$200,000 Instant', 'https://buy.stripe.com/test_bJe4gy72ogem0pgbPN4F200', 'https://nowpayments.io/payment/?iid=6165027996')">Buy Instant</button>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeAuthModal()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+            <h3 id="authModalTitle" style="font-size: 1.3rem; font-weight: 800; margin-bottom: 5px;">Sign in to your account</h3>
+            <p id="authModalSub" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Enter your email and password</p>
+
+            <div id="authError" class="error-msg"></div>
+            <div id="authSuccess" class="success-msg"></div>
+
+            <div id="stepForm">
+                <input type="email" id="emailInput" class="auth-input" placeholder="Email address" autocomplete="email">
+                <input type="password" id="passwordInput" class="auth-input" placeholder="Password (min. 6 characters)" autocomplete="current-password">
+                <button class="cta-btn" style="width:100%; border-radius:8px; margin-bottom:10px;" id="authSubmitBtn" onclick="submitAuth()">Sign In</button>
+                <div style="text-align:center; font-size:0.85rem; margin-bottom:6px;">
+                    <a href="javascript:void(0)" id="toggleAuthMode" onclick="switchAuthMode()" style="color:var(--primary-purple); font-weight:600; text-decoration:none;">Don't have an account? Sign up</a>
+                </div>
+                <div style="text-align:center; color: var(--text-muted); font-size: 0.8rem; margin: 12px 0;">OR</div>
+                <button class="payment-link-btn" style="justify-content:center; gap:10px; width:100%;" onclick="handleGoogleLogin()">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                    Continue with Google
+                </button>
+            </div>
+
+            <div id="stepCode" style="display:none;">
+                <input type="text" id="codeInput" class="auth-input" placeholder="6-digit code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" style="text-align:center; letter-spacing:6px; font-size:1.2rem; font-weight:700;">
+                <button class="cta-btn" style="width:100%; border-radius:8px; margin-bottom:10px;" id="verifyCodeBtn" onclick="verifyCode()">Verify & continue</button>
+                <div style="text-align:center; font-size:0.85rem;">
+                    <a href="javascript:void(0)" onclick="resendCode()" style="color:var(--primary-purple); font-weight:600; text-decoration:none;">Resend code</a>
+                    &nbsp;·&nbsp;
+                    <a href="javascript:void(0)" onclick="backToForm()" style="color:var(--text-muted); text-decoration:none;">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+<div class="modal-overlay" id="paymentModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closePaymentModal()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+            <h3 id="modalAccountTitle" style="font-size: 1.3rem; font-weight: 800;">Select Payment Method</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Choose your payment gateway:</p>
+            <div class="payment-options">
+                <a href="#" id="stripeBtn" target="_blank" class="payment-link-btn">
+                    <span><svg class="ico" style="color: #7c3aed;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> &nbsp; Credit / Debit Card (Stripe)</span>
+                    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                </a>
+                <a href="#" id="cryptoBtn" target="_blank" class="payment-link-btn">
+                    <span><svg class="ico" style="color: #f7931a;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 8h4.5a2 2 0 010 4H9m0 0h5a2 2 0 010 4H9M9 7v10M11 6v2M11 16v2"/></svg> &nbsp; Crypto (NOWPayments)</span>
+                    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SMC Prop Firm. All rights reserved. cTrader API Partner.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/dist/umd/supabase.js"></script>
+    <script>
+        // ====== PUT YOUR SUPABASE DETAILS HERE ======
+        const SUPABASE_URL = 'https://osfmafxgyjdmppvgmscb.supabase.co';        // e.g. https://abcdxyz.supabase.co
+        const SUPABASE_ANON_KEY = 'sb_publishable_VYyF2_2GUqXdzcRRxUf_wg_02K2bKgJ'; // public anon key
+        // ============================================
+
+        let sb = null;
+        let currentUser = null;
+        let isSignUp = false;
+        let pendingEmail = '';
+        let pendingStripe = '', pendingCrypto = '', pendingAccountName = '';
+
+        try {
+            if (!SUPABASE_URL.startsWith('YOUR_')) {
+                sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+        } catch (e) { console.error('Supabase failed to load:', e); }
+
+        function $(id) { return document.getElementById(id); }
+        function clearMessages() { $('authError').style.display = 'none'; $('authSuccess').style.display = 'none'; }
+        function showError(msg) { clearMessages(); const el = $('authError'); el.innerText = msg; el.style.display = 'block'; }
+        function showSuccess(msg) { clearMessages(); const el = $('authSuccess'); el.innerText = msg; el.style.display = 'block'; }
+        function needSb() {
+            if (sb) return false;
+            showError('Sign-in is not connected yet. Add your Supabase URL and anon key in the page, or refresh and try again.');
+            return true;
+        }
+
+        function setMode(signUp) {
+            isSignUp = signUp;
+            $('authModalTitle').innerText = signUp ? 'Create your account' : 'Sign in to your account';
+            $('authModalSub').innerText = signUp ? "Sign up once. We'll email you a code to verify your email." : 'Enter your email and password';
+            $('authSubmitBtn').innerText = signUp ? 'Sign Up' : 'Sign In';
+            $('passwordInput').autocomplete = signUp ? 'new-password' : 'current-password';
+            $('toggleAuthMode').innerText = signUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up";
+        }
+        function switchAuthMode() { setMode(!isSignUp); clearMessages(); }
+
+        function backToForm() {
+            $('stepForm').style.display = 'block';
+            $('stepCode').style.display = 'none';
+            setMode(isSignUp);
+            clearMessages();
+        }
+        function showCodeStep(email) {
+            pendingEmail = email;
+            $('stepForm').style.display = 'none';
+            $('stepCode').style.display = 'block';
+            $('authModalTitle').innerText = 'Verify your email';
+            $('authModalSub').innerText = 'We sent a code to ' + email;
+            $('codeInput').value = '';
+            $('codeInput').focus();
+        }
+
+        function openAuthModal(signUp) { setMode(!!signUp); backToForm(); $('authModal').classList.add('active'); }
+        function closeAuthModal() { $('authModal').classList.remove('active'); clearMessages(); }
+
+        async function submitAuth() {
+            if (needSb()) return;
+            const email = $('emailInput').value.trim();
+            const password = $('passwordInput').value;
+            if (!email || !password) { showError('Please enter your email and password.'); return; }
+            if (isSignUp && password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+            $('authSubmitBtn').disabled = true;
+            try {
+                if (isSignUp) {
+                    const { data, error } = await sb.auth.signUp({ email, password });
+                    if (error) { showError(error.message); return; }
+                    if (data.user && data.user.identities && data.user.identities.length === 0) {
+                        showError('This email is already registered. Please sign in.');
+                        return;
+                    }
+                    showCodeStep(email);
+                    showSuccess('Account created! Enter the code we emailed you (check spam too).');
+                } else {
+                    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+                    if (error) {
+                        if (/not confirmed/i.test(error.message)) {
+                            await sb.auth.resend({ type: 'signup', email });
+                            showCodeStep(email);
+                            showSuccess('Your email is not verified yet. We sent you a new code.');
+                        } else {
+                            showError(error.message);
+                        }
+                        return;
+                    }
+                    currentUser = data.user;
+                    renderHeader();
+                    closeAuthModal();
+                    if (pendingStripe) openPaymentModal(pendingAccountName, pendingStripe, pendingCrypto);
+                }
+            } finally {
+                $('authSubmitBtn').disabled = false;
+            }
+        }
+
+        async function verifyCode() {
+            if (needSb()) return;
+            const token = $('codeInput').value.trim();
+            if (!token) { showError('Enter the code from your email.'); return; }
+            $('verifyCodeBtn').disabled = true;
+            const { data, error } = await sb.auth.verifyOtp({ email: pendingEmail, token, type: 'signup' });
+            $('verifyCodeBtn').disabled = false;
+            if (error) { showError(error.message); return; }
+            currentUser = data.user;
+            renderHeader();
+            closeAuthModal();
+            if (pendingStripe) openPaymentModal(pendingAccountName, pendingStripe, pendingCrypto);
+        }
+
+        async function resendCode() {
+            if (needSb()) return;
+            const { error } = await sb.auth.resend({ type: 'signup', email: pendingEmail });
+            if (error) showError(error.message); else showSuccess('New code sent!');
+        }
+
+        async function handleGoogleLogin() {
+            if (needSb()) return;
+            const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
+            if (error) showError(error.message);
+        }
+
+        async function doSignOut() {
+            if (sb) await sb.auth.signOut();
+            location.reload();
+        }
+
+        function renderHeader() {
+            if (!currentUser) return;
+            const area = $('headerAuthArea');
+            area.innerHTML = '';
+            const span = document.createElement('span');
+            span.style.cssText = 'font-size:0.9rem;font-weight:600;color:var(--primary-purple);';
+            span.textContent = currentUser.email;
+            const btn = document.createElement('button');
+            btn.className = 'cta-btn';
+            btn.style.cssText = 'padding:6px 12px;font-size:0.85rem;';
+            btn.textContent = 'Sign Out';
+            btn.onclick = doSignOut;
+            area.append(span, btn);
+        }
+
+        function openPaymentModal(name, stripeUrl, cryptoUrl) {
+            $('modalAccountTitle').innerText = name;
+            $('stripeBtn').href = stripeUrl;
+            $('cryptoBtn').href = cryptoUrl;
+            $('paymentModal').classList.add('active');
+        }
+        function closePaymentModal() { $('paymentModal').classList.remove('active'); }
+
+        function prepareCheckout(name, stripeUrl, cryptoUrl) {
+            pendingAccountName = name; pendingStripe = stripeUrl; pendingCrypto = cryptoUrl;
+            if (currentUser) openPaymentModal(name, stripeUrl, cryptoUrl);
+            else openAuthModal(true);
+        }
+
+        $('authModal').addEventListener('click', function (e) { if (e.target === this) closeAuthModal(); });
+        $('paymentModal').addEventListener('click', function (e) { if (e.target === this) closePaymentModal(); });
+        $('passwordInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAuth(); });
+        $('codeInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyCode(); });
+
+        if (sb) {
+            sb.auth.getSession().then(({ data }) => {
+                currentUser = data.session ? data.session.user : null;
+                renderHeader();
+            });
+            sb.auth.onAuthStateChange((_event, session) => {
+                currentUser = session ? session.user : null;
+                renderHeader();
+            });
+        }
+    </script>
+</body>
+</html>
