@@ -465,6 +465,26 @@ const STRIPE_LINKS = {
   'instant-50000':'',   'instant-100000':'',  'instant-150000':'',   'instant-200000':''
 };
 const NOW = 'https://nowpayments.io/payment/?iid=';
+/* Other payment methods. Same keys as STRIPE_LINKS ('challenge-50000' ...), one link per account.
+   Leave empty until you have the link: the method then shows as "Coming soon" on the payment page. */
+const PAY_LINKS = {
+  card: STRIPE_LINKS,   // Visa, Mastercard (Stripe)
+  paypal: {},
+  skrill: {},
+  neteller: {}
+};
+const PAY_METHODS = [   // [id, name, note when available, icon]
+  ['card', 'Visa / Mastercard', 'Secure card payment', 'wallet'],
+  ['paypal', 'PayPal', 'Pay with your PayPal account', 'wallet'],
+  ['crypto', 'Crypto', 'Via NOWPayments', 'coin'],
+  ['skrill', 'Skrill', 'Pay with Skrill', 'wallet'],
+  ['neteller', 'Neteller', 'Pay with Neteller', 'wallet']
+];
+function payLinks(type, n, nowId) {
+  const k = type + '-' + n, o = { crypto: NOW + nowId };
+  Object.keys(PAY_LINKS).forEach(m => { o[m] = (PAY_LINKS[m] || {})[k] || ''; });
+  return o;
+}
 const PROMO = 'SMC10';
 const CONTACT_EMAIL = '';   // put your support email here (shown on the legal pages when filled)
 /* Optional Supabase tables read by the dashboard (empty state shows if they do not exist):
@@ -485,7 +505,7 @@ const PLANS = {
 };
 
 let sb = null, user = null, isSignUp = false;
-let pending = null;                 // {name, stripe, crypto}
+let pending = null;                 // {name, links, meta}
 const pick = {};                    // picker state per context
 let data = { accounts: [], payouts: [], loaded: false };
 
@@ -534,7 +554,7 @@ function renderPicker(ctx) {
   $(ctx + '-price').textContent = s[1];
   $(ctx + '-price2').textContent = s[1];
   const b = $(ctx + '-btn'); b.textContent = p.cta;
-  b.onclick = () => checkout(s[0] + ' ' + p.name, STRIPE_LINKS[st.type + '-' + n] || '', NOW + s[2], { label: p.label, size: s[0], price: s[1] });
+  b.onclick = () => checkout(s[0] + ' ' + p.name, payLinks(st.type, n, s[2]), { label: p.label, size: s[0], price: s[1] });
 }
 
 function siteHeader() {
@@ -706,7 +726,7 @@ function acctCard(a) {
 }
 function buyPlan(type, idx) {
   const p = PLANS[type], s2 = p.sizes[idx], n = sizeNum(s2[0]);
-  checkout(s2[0] + ' ' + p.name, STRIPE_LINKS[type + '-' + n] || '', NOW + s2[2], { label: p.label, size: s2[0], price: s2[1] });
+  checkout(s2[0] + ' ' + p.name, payLinks(type, n, s2[2]), { label: p.label, size: s2[0], price: s2[1] });
 }
 function recPlans() {
   const items = [['challenge', 2], ['challenge', 4], ['instant', 2]];
@@ -991,24 +1011,25 @@ async function changePw() {
 let coMethod = '';
 function checkoutHTML() {
   const m = pending.meta || {};
-  const hasCard = !!pending.stripe;
-  const card = '<button class="method' + (coMethod === 'card' ? ' on' : '') + '"' + (hasCard ? '' : ' disabled') + ' onclick="setMethod(\'card\')"><div class="mi">' + ico('wallet') + '</div><b>Card</b><small>' + (hasCard ? 'Secure page by Stripe' : 'Not available for this account yet') + '</small></button>';
-  const cry = '<button class="method' + (coMethod === 'crypto' ? ' on' : '') + '" onclick="setMethod(\'crypto\')"><div class="mi">' + ico('coin') + '</div><b>Crypto</b><small>Via NOWPayments</small></button>';
+  const tiles = PAY_METHODS.map(pm => {
+    const ok = !!(pending.links || {})[pm[0]];
+    return '<button class="method' + (coMethod === pm[0] ? ' on' : '') + '" data-m="' + pm[0] + '"' + (ok ? '' : ' disabled') + ' onclick="setMethod(\'' + pm[0] + '\')"><div class="mi">' + ico(pm[3]) + '</div><b>' + pm[1] + '</b><small>' + (ok ? pm[2] : 'Coming soon') + '</small></button>';
+  }).join('');
   return '<div class="co"><div class="co-bar"><a class="logo" href="#/">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></a><a class="btn btn-g btn-sm" href="#/dashboard/accounts">Dashboard</a></div>' +
     '<div class="co-wrap"><div><h1><a href="#/" onclick="history.length>1?history.back():(location.hash=\'#/\');return false" aria-label="Back">&lsaquo;</a>Payments</h1>' +
-    '<div class="sec-l">Choose how to pay</div><div class="methods">' + card + cry + '</div>' +
+    '<div class="sec-l">Choose how to pay</div><div class="methods">' + tiles + '</div>' +
     '<p id="coMsg" class="msg okm" style="margin-top:20px"></p></div>' +
     '<aside class="osum"><div class="hd"><h3>' + esc(pending.name) + '</h3><div>' + esc(m.label || '') + '</div><div>Account size: ' + esc(m.size || '') + '</div></div>' +
     '<div class="bd"><div class="rw"><span>1 account</span><b>' + esc(m.price || '') + '</b></div><div class="rw"><span>Trading platform</span><b>MetaTrader 5</b></div><div class="rw"><span>Daily / max loss</span><b>5% / 10%</b></div>' +
     '<div class="tot"><span>Total</span><b>' + esc(m.price || '') + '</b></div>' +
     '<label class="agree"><input type="checkbox" id="coAgree" onchange="updateCo()"><span>I agree to the <a href="#/terms" target="_blank" rel="noopener" style="color:var(--p)">Terms of Service</a>, the <a href="#/risk" target="_blank" rel="noopener" style="color:var(--p)">Risk Disclosure</a> and the challenge rules.</span></label>' +
     '<button class="btn btn-p" id="coGo" onclick="goPay()" disabled>Continue</button>' +
-    '<p class="note">Discount codes such as ' + PROMO + ' are entered on the card payment page.</p></div></aside></div></div>';
+    '<p class="note">Discount codes such as ' + PROMO + ' are entered on the payment page when the method supports it.</p></div></aside></div></div>';
 }
-function setMethod(k) { coMethod = k; document.querySelectorAll('.method').forEach((el, i) => el.classList.toggle('on', (i === 0 ? 'card' : 'crypto') === k)); updateCo(); }
+function setMethod(k) { coMethod = k; document.querySelectorAll('.method').forEach(el => el.classList.toggle('on', el.dataset.m === k)); updateCo(); }
 function updateCo() { $('coGo').disabled = !(coMethod && $('coAgree').checked); }
 function goPay() {
-  const url = coMethod === 'card' ? pending.stripe : pending.crypto;
+  const url = (pending.links || {})[coMethod];
   if (!url) return;
   window.open(url, '_blank', 'noopener');
   const m = $('coMsg'); m.textContent = 'Finish your payment in the new tab. Your account is added to your dashboard after we confirm the payment.'; m.style.display = 'block';
@@ -1153,11 +1174,11 @@ async function doSignOut() {
 }
 
 /* ---------- PAYMENT ---------- */
-function checkout(name, stripe, crypto, meta) {
-  pending = { name, stripe, crypto, meta: meta || {} };
+function checkout(name, links, meta) {
+  pending = { name, links: links || {}, meta: meta || {} };
   if (user) location.hash = '#/checkout'; else openAuth(true);
 }
-function openPay(name, stripe, crypto) {
+function openPay(name, stripe, crypto) {   // legacy popup, no longer used
   $('payTitle').textContent = name;
   $('stripeBtn').style.display = stripe ? 'flex' : 'none';
   if (stripe) $('stripeBtn').href = stripe;
