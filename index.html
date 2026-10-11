@@ -321,6 +321,28 @@ footer.site .wrap{display:flex;flex-direction:column;gap:14px}
 .osum .note{font-size:.78rem;color:var(--mut);margin-top:12px}
 @media(max-width:860px){.co-wrap{grid-template-columns:1fr}.osum{position:static}}
 
+/* legal + meters + admin */
+.legal{max-width:780px;margin:0 auto;padding:56px 5% 70px}
+.legal h1{font-size:2.2rem;margin-bottom:6px}
+.legal .upd{color:var(--mut);font-size:.88rem;margin-bottom:30px}
+.legal h2{font-size:1.15rem;margin:28px 0 8px}
+.legal p,.legal li{color:var(--mut);font-size:.96rem;margin-bottom:10px}
+.legal ul{padding-left:22px}
+.meter{margin:10px 0 2px}
+.meter .mt{display:flex;justify-content:space-between;font-size:.8rem;color:var(--mut);margin-bottom:5px}
+.meter .mt b{color:var(--tx)}
+.meter .mb{height:7px;background:#e9e3fb;border-radius:99px;overflow:hidden}
+.meter .mb i{display:block;height:100%;border-radius:99px;background:var(--ok)}
+.meter .mb i.mid{background:var(--warn)}
+.meter .mb i.hi{background:var(--bad)}
+.breach-note{margin-top:10px;font-size:.82rem;color:var(--bad);background:rgba(224,64,90,.08);border-radius:8px;padding:8px 10px}
+.ad-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.ad-form{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:22px}
+.ad-form .field{margin:0}
+.mini{width:104px;padding:7px 9px;font-size:.85rem}
+.row-btn{padding:6px 12px;font-size:.78rem}
+@media(max-width:760px){.ad-form{grid-template-columns:1fr 1fr}}
+
 @media(max-width:960px){
   .hero .wrap{grid-template-columns:1fr}
   .hero h1{font-size:2.6rem}
@@ -426,6 +448,7 @@ const STRIPE_LINKS = {
 };
 const NOW = 'https://nowpayments.io/payment/?iid=';
 const PROMO = 'SMC10';
+const CONTACT_EMAIL = '';   // put your support email here (shown on the legal pages when filled)
 /* Optional Supabase tables read by the dashboard (empty state shows if they do not exist):
    accounts: id, user_id, plan ('challenge'|'instant'), size (number), balance (number),
              status ('active'|'passed'|'funded'|'breached'), phase (text), profit_target_pct (number), created_at
@@ -571,7 +594,7 @@ function homeHTML() {
 }
 function footerHTML() {
   return '<footer class="site"><div class="wrap"><div class="logo">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></div>' +
-    '<div class="foot-links"><a href="#/" onclick="goSec(\'challenges\');return false">Challenges</a><a href="#/" onclick="goSec(\'how\');return false">How it works</a><a href="#/" onclick="goSec(\'faq\');return false">FAQ</a></div>' +
+    '<div class="foot-links"><a href="#/" onclick="goSec(\'challenges\');return false">Challenges</a><a href="#/" onclick="goSec(\'how\');return false">How it works</a><a href="#/" onclick="goSec(\'faq\');return false">FAQ</a><a href="#/terms">Terms of Service</a><a href="#/privacy">Privacy Policy</a><a href="#/risk">Risk Disclosure</a></div>' +
     '<p class="risk">All trading takes place in a simulated environment with virtual funds. Trading involves risk and past performance does not guarantee future results. Nothing on this site is financial advice.</p>' +
     '<div>&copy; 2026 SMC Prop Firm. All rights reserved. cTrader API Partner.</div></div></footer>';
 }
@@ -579,12 +602,12 @@ function footerHTML() {
 /* ---------- DASHBOARD ---------- */
 const DNAV = [['accounts','Accounts','home'],['payout','Payout','wallet'],['refer','Refer & Earn','user'],['partner','Become a partner','layers'],['offers','My Offers','pie'],['competitions','Competitions','chart'],['certificates','Certificates','shield'],['transactions','Transactions','cash'],['help','Help & Support','info']];
 const DMORE = [['calculator','Calculator'],['rules','Trading rules'],['new','Buy a challenge']];
-const DPAGES = DNAV.map(x => x[0]).concat(DMORE.map(x => x[0]), ['settings']);
+const DPAGES = DNAV.map(x => x[0]).concat(DMORE.map(x => x[0]), ['settings', 'admin']);
 let dFilter = 'active', dPayTab = 'eligible', moreOpen = false;
 
 function dashShell(page) {
   const initial = esc((user.email || '?').charAt(0).toUpperCase());
-  const nav = DNAV.map(p => '<a class="nl' + (p[0] === page ? ' on' : '') + '" href="#/dashboard/' + p[0] + '">' + ico(p[2]) + p[1] + '</a>').join('');
+  const nav = DNAV.concat(data.isAdmin ? [['admin', 'Admin', 'shield']] : []).map(p => '<a class="nl' + (p[0] === page ? ' on' : '') + '" href="#/dashboard/' + p[0] + '">' + ico(p[2]) + p[1] + '</a>').join('');
   const inMore = DMORE.some(m => m[0] === page);
   const open = moreOpen || inMore;
   const more = '<a class="nl" href="#" onclick="toggleMore();return false">' + ico('menu') + 'More<span class="car">' + (open ? '&#9652;' : '&#9662;') + '</span></a>' +
@@ -613,15 +636,30 @@ function statusTag(st) {
 function emptyBlock(icon, title, text, btn) {
   return '<div class="empty"><div class="ei">' + ico(icon) + '</div><h3>' + title + '</h3><p>' + text + '</p>' + (btn || '') + '</div>';
 }
+function meter(label, used, limit) {
+  const pct = limit > 0 ? Math.max(0, Math.min(100, used / limit * 100)) : 0;
+  const cls = pct >= 80 ? 'hi' : pct >= 50 ? 'mid' : '';
+  return '<div class="meter"><div class="mt"><span>' + label + '</span><b>' + money(used) + ' of ' + money(limit) + '</b></div><div class="mb"><i class="' + cls + '" style="width:' + pct.toFixed(0) + '%"></i></div></div>';
+}
+function acctStats(a) {
+  const size = Number(a.size) || 0;
+  const eq = a.equity != null ? Number(a.equity) : (a.balance != null ? Number(a.balance) : size);
+  const dsb = a.day_start_balance != null ? Number(a.day_start_balance) : eq;
+  const tgt = Number(a.profit_target_pct) || 0;
+  const plPct = size ? (eq - size) / size * 100 : 0;
+  return { size, eq, tgt, plPct,
+    dailyUsed: Math.max(0, dsb - eq), dailyLimit: size * 0.05,
+    maxUsed: Math.max(0, size - eq), maxLimit: size * 0.10,
+    progress: tgt ? Math.max(0, Math.min(100, plPct / tgt * 100)) : 0 };
+}
 function acctCard(a) {
-  const size = Number(a.size) || 0, bal = Number(a.balance) || size, tgt = Number(a.profit_target_pct) || 0;
-  const pl = size ? (bal - size) / size * 100 : 0;
-  const prog = tgt ? Math.max(0, Math.min(100, pl / tgt * 100)) : 0;
+  const x = acctStats(a);
   return '<div class="acct-card" style="box-shadow:none"><div class="acct-top"><b>' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + (a.phase ? ' &middot; ' + esc(a.phase) : '') + '</b>' + statusTag(a.status) + '</div>' +
-    '<div class="acct-size" style="font-size:2rem">' + money(size) + '</div><div class="acct-sub">Balance ' + money(bal) + '</div>' +
-    (tgt ? '<div class="lbl" style="margin-bottom:0;font-size:.8rem;color:var(--mut)">Profit target ' + tgt + '%</div><div class="bar"><i style="width:' + prog.toFixed(0) + '%"></i></div>' : '') +
-    '<div class="kv"><span>Profit / loss</span><b style="color:' + (pl >= 0 ? 'var(--ok)' : 'var(--bad)') + '">' + (pl >= 0 ? '+' : '') + pl.toFixed(2) + '%</b></div>' +
-    '<div class="kv"><span>Daily / max loss</span><b>5% / 10%</b></div></div>';
+    '<div class="acct-size" style="font-size:2rem">' + money(x.size) + '</div><div class="acct-sub">Equity ' + money(x.eq) + ' &middot; <span style="color:' + (x.plPct >= 0 ? 'var(--ok)' : 'var(--bad)') + '">' + (x.plPct >= 0 ? '+' : '') + x.plPct.toFixed(2) + '%</span></div>' +
+    (x.tgt ? '<div class="meter"><div class="mt"><span>Profit target ' + x.tgt + '%</span><b>' + x.progress.toFixed(0) + '%</b></div><div class="mb"><i style="width:' + x.progress.toFixed(0) + '%;background:var(--p)"></i></div></div>' : '') +
+    meter('Daily loss', x.dailyUsed, x.dailyLimit) + meter('Max loss', x.maxUsed, x.maxLimit) +
+    (a.status === 'breached' && a.breach_reason ? '<div class="breach-note">' + esc(a.breach_reason) + '</div>' : '') +
+    (a.status === 'passed' ? '<div class="breach-note" style="color:var(--ok);background:rgba(15,157,118,.08)">Target reached. We will move you to the next step.</div>' : '') + '</div>';
 }
 function buyPlan(type, idx) {
   const p = PLANS[type], s2 = p.sizes[idx], n = sizeNum(s2[0]);
@@ -704,6 +742,50 @@ function payoutPage() {
   return '<div class="stabs">' + tabs + '</div>' + body;
 }
 
+/* ---------- ADMIN ---------- */
+let adTab = 'payouts', ad = { accounts: [], payouts: [], loaded: false }, adMsg = '';
+async function adminLoad() {
+  ad = { accounts: [], payouts: [], loaded: true };
+  try { const a = await sb.from('accounts').select('*').order('created_at', { ascending: false }); if (!a.error) ad.accounts = a.data || []; } catch (e) {}
+  try { const p = await sb.from('payouts').select('*').order('created_at', { ascending: false }); if (!p.error) ad.payouts = p.data || []; } catch (e) {}
+}
+async function adminCall(fn, args, okText) {
+  const { error } = await sb.rpc(fn, args);
+  adMsg = error ? 'Error: ' + error.message : okText;
+  await adminLoad(); $('dbody').innerHTML = adminPage();
+}
+function setAdTab(t) { adTab = t; $('dbody').innerHTML = adminPage(); }
+function adminAdd() {
+  const email = $('adEmail').value.trim(), plan = $('adPlan').value, size = parseFloat($('adSize').value);
+  if (!email || !(size > 0)) { adMsg = 'Enter the customer email and a size.'; $('dbody').innerHTML = adminPage(); return; }
+  adminCall('admin_add_account', { p_email: email, p_plan: plan, p_size: size }, 'Account added for ' + email + '.');
+}
+function adminUpdate(id) { adminCall('admin_update_equity', { p_id: id, p_balance: parseFloat($('ab-' + id).value), p_equity: parseFloat($('ae-' + id).value) }, 'Account updated. Rules were checked automatically.'); }
+function adminNext(id) { adminCall('admin_next_phase', { p_id: id }, 'Account moved to the next step.'); }
+function adminPay(id, st) { adminCall('admin_set_payout', { p_id: id, p_status: st }, 'Payout marked ' + st + '.'); }
+function adminRoll() { if (confirm('Start a new trading day for all live accounts?')) adminCall('admin_roll_day', {}, 'New trading day started.'); }
+function adminPage() {
+  const emailOf = {}; ad.accounts.forEach(a => { if (a.owner_email) emailOf[a.user_id] = a.owner_email; });
+  const tabs = [['payouts', 'Payout requests'], ['accounts', 'Accounts']].map(t => '<button class="fp' + (adTab === t[0] ? ' on' : '') + '" onclick="setAdTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('');
+  let body;
+  if (adTab === 'payouts') {
+    body = ad.payouts.length ? '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Method</th><th>Details</th><th>Status</th><th></th></tr></thead><tbody>' +
+      ad.payouts.map(p => '<tr><td>' + esc(new Date(p.created_at).toLocaleDateString()) + '</td><td>' + esc(emailOf[p.user_id] || String(p.user_id).slice(0, 8)) + '</td><td>' + money(p.amount) + '</td><td>' + esc(p.method || '-') + '</td><td style="max-width:220px;word-break:break-all">' + esc(p.details || '-') + '</td><td>' + statusTag(p.status) + '</td><td>' +
+      (p.status === 'pending' ? '<button class="btn btn-p row-btn" onclick="adminPay(\'' + p.id + '\',\'paid\')">Mark paid</button> <button class="btn btn-g row-btn" onclick="adminPay(\'' + p.id + '\',\'rejected\')">Reject</button>' : '') + '</td></tr>').join('') + '</tbody></table></div>'
+      : emptyBlock('cash', 'No payout requests', 'Requests from customers will show up here.');
+  } else {
+    body = '<div class="ad-form"><div class="field"><label>Customer email (they must have signed up)</label><input id="adEmail" class="in" type="email" placeholder="name@example.com"></div>' +
+      '<div class="field"><label>Program</label><select id="adPlan" class="in"><option value="challenge">Challenge</option><option value="instant">Instant</option></select></div>' +
+      '<div class="field"><label>Size ($)</label><input id="adSize" class="in" type="number" placeholder="50000"></div><button class="btn btn-p btn-sm" onclick="adminAdd()">Add account</button></div>' +
+      (ad.accounts.length ? '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Customer</th><th>Program</th><th>Size</th><th>Status</th><th>Balance</th><th>Equity</th><th></th></tr></thead><tbody>' +
+      ad.accounts.map(a => '<tr><td>' + esc(a.owner_email || String(a.user_id).slice(0, 8)) + '</td><td>' + (a.plan === 'instant' ? 'Instant' : 'Challenge') + (a.phase ? '<br><small>' + esc(a.phase) + '</small>' : '') + '</td><td>' + money(a.size) + '</td><td>' + statusTag(a.status) + (a.breach_reason ? '<br><small>' + esc(a.breach_reason) + '</small>' : '') + '</td>' +
+      '<td><input class="in mini" id="ab-' + a.id + '" type="number" step="0.01" value="' + (a.balance != null ? a.balance : a.size) + '"></td><td><input class="in mini" id="ae-' + a.id + '" type="number" step="0.01" value="' + (a.equity != null ? a.equity : a.size) + '"></td><td style="white-space:nowrap"><button class="btn btn-g row-btn" onclick="adminUpdate(\'' + a.id + '\')">Save</button>' +
+      (a.status === 'passed' ? ' <button class="btn btn-p row-btn" onclick="adminNext(\'' + a.id + '\')">Next step</button>' : '') + '</td></tr>').join('') + '</tbody></table></div>' : emptyBlock('wallet', 'No accounts yet', 'Add the first account above after a customer pays.'));
+  }
+  return '<h2 class="page-h">Admin</h2><p class="page-s">Only you see this page.</p><div class="ad-bar">' + tabs + '<button class="btn btn-g btn-sm" onclick="adminRoll()">Start new trading day</button></div>' +
+    (adMsg ? '<div class="msg ' + (adMsg.indexOf('Error') === 0 ? 'err' : 'okm') + '" style="display:block">' + esc(adMsg) + '</div>' : '') + body;
+}
+
 const FAQ_ITEMS = [
   ['What is the difference between Challenge and Instant Funding?', 'The challenge has an evaluation with profit targets before you are funded. Instant Funding gives you a funded account with no evaluation.'],
   ['What are the loss rules?', 'The daily loss limit is 5% and the maximum loss limit is 10% on every account.'],
@@ -729,6 +811,7 @@ function copyCode() {
 
 function dashBody(page) {
   if (page === 'accounts') return accountsPage();
+  if (page === 'admin') return adminPage();
   if (page === 'payout') return payoutPage();
   if (page === 'new') return '<h2 class="page-h">Start a challenge</h2><p class="page-s">Pick a program and an account size.</p>' + pickerHTML('dash');
   if (page === 'refer') return '<h2 class="page-h">Refer &amp; Earn</h2>' + emptyBlock('user', 'Referral program coming soon', 'We will announce how rewards work before it opens. Nothing to do for now.');
@@ -767,7 +850,7 @@ function dashBody(page) {
   }
   if (page === 'rules') {
     return '<h2 class="page-h">Trading rules</h2><p class="page-s">Stay inside these limits on every account.</p>' +
-      '<div class="panel"><h2>Loss limits (all accounts)</h2><div class="rule-grid"><div class="rule"><b>5%</b><span>Daily loss limit</span></div><div class="rule"><b>10%</b><span>Max loss limit</span></div></div></div>' +
+      '<div class="panel"><h2>Loss limits (all accounts)</h2><div class="rule-grid"><div class="rule"><b>5%</b><span>Daily loss limit (from the balance at the start of the day)</span></div><div class="rule"><b>10%</b><span>Max loss limit (from the starting balance)</span></div></div></div>' +
       '<div class="panel"><h2>Evaluation Challenge</h2><div class="rule-grid"><div class="rule"><b>8%</b><span>Phase 1 profit target</span></div><div class="rule"><b>5%</b><span>Phase 2 profit target</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>' +
       '<div class="panel"><h2>Instant Funding</h2><div class="rule-grid"><div class="rule"><b>None</b><span>Evaluation</span></div><div class="rule"><b>80%</b><span>Profit split</span></div><div class="rule"><b>cTrader</b><span>Platform</span></div></div></div>';
   }
@@ -782,8 +865,9 @@ function dashBody(page) {
 }
 
 async function loadData() {
-  data = { accounts: [], payouts: [], loaded: true };
+  data = { accounts: [], payouts: [], loaded: true, isAdmin: false };
   if (!sb || !user) return;
+  try { const r = await sb.rpc('is_admin'); data.isAdmin = r.data === true; } catch (e) {}
   try {
     const a = await sb.from('accounts').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
     if (!a.error && a.data) data.accounts = a.data;
@@ -817,7 +901,7 @@ function checkoutHTML() {
     '<aside class="osum"><div class="hd"><h3>' + esc(pending.name) + '</h3><div>' + esc(m.label || '') + '</div><div>Account size: ' + esc(m.size || '') + '</div></div>' +
     '<div class="bd"><div class="rw"><span>1 account</span><b>' + esc(m.price || '') + '</b></div><div class="rw"><span>Trading platform</span><b>cTrader</b></div><div class="rw"><span>Daily / max loss</span><b>5% / 10%</b></div>' +
     '<div class="tot"><span>Total</span><b>' + esc(m.price || '') + '</b></div>' +
-    '<label class="agree"><input type="checkbox" id="coAgree" onchange="updateCo()"><span>I agree to the Terms of Service and the challenge rules.</span></label>' +
+    '<label class="agree"><input type="checkbox" id="coAgree" onchange="updateCo()"><span>I agree to the <a href="#/terms" target="_blank" rel="noopener" style="color:var(--p)">Terms of Service</a>, the <a href="#/risk" target="_blank" rel="noopener" style="color:var(--p)">Risk Disclosure</a> and the challenge rules.</span></label>' +
     '<button class="btn btn-p" id="coGo" onclick="goPay()" disabled>Continue</button>' +
     '<p class="note">Discount codes such as ' + PROMO + ' are entered on the card payment page.</p></div></aside></div></div>';
 }
@@ -828,6 +912,33 @@ function goPay() {
   if (!url) return;
   window.open(url, '_blank', 'noopener');
   const m = $('coMsg'); m.textContent = 'Finish your payment in the new tab. Your account is added to your dashboard after we confirm the payment.'; m.style.display = 'block';
+}
+
+/* ---------- LEGAL PAGES (templates: have them reviewed by a lawyer) ---------- */
+function contactLine() { return CONTACT_EMAIL ? '<h2>Contact</h2><p>Questions about this page: <a href="mailto:' + esc(CONTACT_EMAIL) + '" style="color:var(--p)">' + esc(CONTACT_EMAIL) + '</a>.</p>' : ''; }
+const LEGAL = {
+  terms: ['Terms of Service', '<h2>1. What we offer</h2><p>SMC Prop Firm offers evaluation challenges and instant funding programs that take place in a fully simulated trading environment with virtual funds. No real capital is lent or traded for you, and we do not provide brokerage, investment or financial advice.</p>' +
+    '<h2>2. Eligibility</h2><p>You must be at least 18 years old and allowed by the laws where you live to use this service. You are responsible for following the laws that apply to you.</p>' +
+    '<h2>3. Accounts and rules</h2><ul><li>Daily loss limit: 5% on every account.</li><li>Maximum loss limit: 10% on every account.</li><li>Evaluation Challenge: profit target of 8% in Phase 1 and 5% in Phase 2.</li><li>Instant Funding: no evaluation phase, 80% profit split.</li><li>Platform: cTrader.</li></ul><p>The maximum loss limit is measured from the starting balance of the account. The daily loss limit is measured from the balance at the start of the trading day. An account that reaches a loss limit is closed.</p>' +
+    '<h2>4. Fees and payments</h2><p>The fee for each account is shown before you pay. Payments are handled by third-party providers (Stripe for cards and NOWPayments for crypto). Your account is added to your dashboard after we confirm the payment.</p>' +
+    '<h2>5. Rewards and payouts</h2><p>Profit on a funded account is shared according to the program you bought. Payout requests are made from your dashboard, reviewed by us and paid to the method you provide. Rewards depend on respecting the rules of your account.</p>' +
+    '<h2>6. Prohibited conduct</h2><p>We may close an account, and refuse payouts on it, if you give false information, share your account, exploit errors in the platform or prices, or otherwise try to cheat the rules.</p>' +
+    '<h2>7. No financial advice</h2><p>Nothing on this site is financial advice. Trading involves risk. See the Risk Disclosure.</p>' +
+    '<h2>8. Liability</h2><p>The service is provided as is. To the extent allowed by law, we are not liable for losses that result from using the service, including interruptions or errors.</p>' +
+    '<h2>9. Changes</h2><p>We may update these terms. The date at the top shows the latest version. Continuing to use the service means you accept the new version.</p>'],
+  privacy: ['Privacy Policy', '<h2>What we collect</h2><ul><li>Your email address and password (the password is stored by our login provider, not readable by us).</li><li>Information about your accounts: program, size, balance and status.</li><li>Payout details you type in (wallet address or bank details) and your payout requests.</li></ul>' +
+    '<h2>Why we use it</h2><p>To create and run your account, show your dashboard, check the account rules, process payouts and contact you about your account.</p>' +
+    '<h2>Who handles it</h2><p>We use these providers: Supabase (login and database), Stripe and NOWPayments (payments) and Vercel (website hosting). They process data only to provide their service to us.</p>' +
+    '<h2>Your choices</h2><p>You can ask us to show, correct or delete the data we hold about you by contacting us. Some records may need to be kept if the law requires it.</p>' +
+    '<h2>Security</h2><p>We take reasonable steps to protect your data, but no system is completely secure.</p>'],
+  risk: ['Risk Disclosure', '<h2>Simulated environment</h2><p>All trading on SMC Prop Firm accounts takes place in a simulated environment with virtual funds. Results in a simulated environment may differ from real market trading.</p>' +
+    '<h2>Trading is risky</h2><p>Trading foreign exchange, indices, metals and other CFDs carries a high level of risk and may not be suitable for everyone. You can lose the fee you paid for an account.</p>' +
+    '<h2>No guarantee</h2><p>Past performance does not guarantee future results. We do not promise that you will pass a challenge, become funded or receive payouts.</p>' +
+    '<h2>Not advice</h2><p>Nothing on this site is financial, investment or legal advice. Make your own decisions and, if needed, speak to a qualified adviser.</p>']
+};
+function legalHTML(k) {
+  const d = LEGAL[k];
+  return siteHeader() + '<div class="legal"><h1>' + d[0] + '</h1><div class="upd">Last updated: October 2026</div>' + d[1] + contactLine() + '</div>' + footerHTML();
 }
 
 /* ---------- ROUTER ---------- */
@@ -843,12 +954,16 @@ async function route() {
     const pg = DPAGES.indexOf(page) >= 0 ? page : 'accounts';
     app.innerHTML = dashShell(pg);
     window.scrollTo(0, 0);
-    if (!data.loaded) { $('dbody').innerHTML = '<div class="empty"><p>Loading your data...</p></div>'; await loadData(); }
+    if (!data.loaded) { $('dbody').innerHTML = '<div class="empty"><p>Loading your data...</p></div>'; await loadData(); app.innerHTML = dashShell(pg); }
+    if (pg === 'admin' && !data.isAdmin) { location.hash = '#/dashboard/accounts'; return; }
+    if (pg === 'admin' && !ad.loaded) { await adminLoad(); }
     $('dbody').innerHTML = dashBody(pg);
     if (pg === 'new') renderPicker('dash');
     if (pg === 'calculator') { calcLot(); calcPl(); }
     return;
   }
+  const lg = h.replace('#/', '');
+  if (LEGAL[lg]) { app.innerHTML = legalHTML(lg); renderHdr(); window.scrollTo(0, 0); return; }
   if (h.startsWith('#/checkout')) {
     if (!authReady) { app.innerHTML = ''; return; }
     if (!pending) { location.hash = '#/'; return; }
@@ -933,7 +1048,7 @@ async function forgotPassword() {
 }
 async function doSignOut() {
   if (sb) await sb.auth.signOut();
-  user = null; data = { accounts: [], payouts: [], loaded: false };
+  user = null; data = { accounts: [], payouts: [], loaded: false }; ad = { accounts: [], payouts: [], loaded: false };
   location.hash = '#/'; route();
 }
 
