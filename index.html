@@ -456,35 +456,17 @@ footer.site .wrap{display:flex;flex-direction:column;gap:14px}
 /* ============ SETTINGS ============ */
 const SUPABASE_URL = 'https://dofncwwlubzllglwpkrr.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_4oSYI75c5v1IwYiatvBaTQ_PslS9lq9';
-/* One Stripe Payment Link PER account (each link must contain only that one product).
-   Paste the link for each plan + size. Empty = card payment is hidden for that account. */
-const STRIPE_LINKS = {
-  'challenge-2000':'',  'challenge-5000':'',  'challenge-10000':'',  'challenge-15000':'',
-  'challenge-50000':'', 'challenge-100000':'','challenge-150000':'', 'challenge-200000':'',
-  'instant-2000':'',    'instant-5000':'',    'instant-10000':'',    'instant-15000':'',
-  'instant-50000':'',   'instant-100000':'',  'instant-150000':'',   'instant-200000':''
-};
-const NOW = 'https://nowpayments.io/payment/?iid=';
-/* Other payment methods. Same keys as STRIPE_LINKS ('challenge-50000' ...), one link per account.
-   Leave empty until you have the link: the method then shows as "Coming soon" on the payment page. */
-const PAY_LINKS = {
-  card: STRIPE_LINKS,   // Visa, Mastercard (Stripe)
-  paypal: {},
-  skrill: {},
-  neteller: {}
-};
+/* Payments run through two Supabase functions (see PAYMENTS_SETUP.md).
+   Turn each method on (true) only AFTER you finished its setup steps. */
+const CARD_ENABLED = true;     // Card, PayPal and wallets through Stripe
+const CRYPTO_ENABLED = true;   // Crypto through NOWPayments
 const PAY_METHODS = [   // [id, name, note when available, icon]
-  ['card', 'Visa / Mastercard', 'Secure card payment', 'wallet'],
-  ['paypal', 'PayPal', 'Pay with your PayPal account', 'wallet'],
-  ['crypto', 'Crypto', 'Via NOWPayments', 'coin'],
+  ['card', 'Card, PayPal & wallets', 'Visa, Mastercard and more', 'wallet'],
+  ['crypto', 'Crypto', 'Bitcoin, USDT and more', 'coin'],
   ['skrill', 'Skrill', 'Pay with Skrill', 'wallet'],
   ['neteller', 'Neteller', 'Pay with Neteller', 'wallet']
 ];
-function payLinks(type, n, nowId) {
-  const k = type + '-' + n, o = { crypto: NOW + nowId };
-  Object.keys(PAY_LINKS).forEach(m => { o[m] = (PAY_LINKS[m] || {})[k] || ''; });
-  return o;
-}
+function methodOn(id) { return id === 'card' ? CARD_ENABLED : id === 'crypto' ? CRYPTO_ENABLED : false; }
 const PROMO = 'SMC10';
 const CONTACT_EMAIL = '';   // put your support email here (shown on the legal pages when filled)
 /* Optional Supabase tables read by the dashboard (empty state shows if they do not exist):
@@ -505,7 +487,7 @@ const PLANS = {
 };
 
 let sb = null, user = null, isSignUp = false;
-let pending = null;                 // {name, links, meta}
+let pending = null;                 // {name, meta: {plan, size, label, price}}
 const pick = {};                    // picker state per context
 let data = { accounts: [], payouts: [], loaded: false };
 
@@ -554,7 +536,7 @@ function renderPicker(ctx) {
   $(ctx + '-price').textContent = s[1];
   $(ctx + '-price2').textContent = s[1];
   const b = $(ctx + '-btn'); b.textContent = p.cta;
-  b.onclick = () => checkout(s[0] + ' ' + p.name, payLinks(st.type, n, s[2]), { label: p.label, size: s[0], price: s[1] });
+  b.onclick = () => checkout(s[0] + ' ' + p.name, { plan: st.type, sizeNum: n, label: p.label, size: s[0], price: s[1] });
 }
 
 function siteHeader() {
@@ -726,7 +708,7 @@ function acctCard(a) {
 }
 function buyPlan(type, idx) {
   const p = PLANS[type], s2 = p.sizes[idx], n = sizeNum(s2[0]);
-  checkout(s2[0] + ' ' + p.name, payLinks(type, n, s2[2]), { label: p.label, size: s2[0], price: s2[1] });
+  checkout(s2[0] + ' ' + p.name, { plan: type, sizeNum: n, label: p.label, size: s2[0], price: s2[1] });
 }
 function recPlans() {
   const items = [['challenge', 2], ['challenge', 4], ['instant', 2]];
@@ -945,10 +927,11 @@ function dashBody(page) {
       emptyBlock('shield', 'No certificates yet', 'Your certificates will show up here when you reach a milestone.');
   }
   if (page === 'transactions') {
-    return '<h2 class="page-h">Transactions</h2><p class="page-s">Accounts added to your profile.</p>' + (data.accounts.length ?
-      '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Program</th><th>Account size</th><th>Status</th></tr></thead><tbody>' +
-      data.accounts.map(a => '<tr><td>' + esc(a.created_at ? new Date(a.created_at).toLocaleDateString() : '-') + '</td><td>' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + '</td><td>' + money(a.size) + '</td><td>' + statusTag(a.status) + '</td></tr>').join('') + '</tbody></table></div>'
-      : emptyBlock('cash', 'No transactions yet', 'Your purchases will be listed here once your account is added.'));
+    const ords = data.orders || [];
+    return '<h2 class="page-h">Transactions</h2><p class="page-s">Your orders.</p>' + (ords.length ?
+      '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Program</th><th>Account size</th><th>Method</th><th>Amount</th><th>Status</th></tr></thead><tbody>' +
+      ords.map(o => '<tr><td>' + esc(o.created_at ? new Date(o.created_at).toLocaleDateString() : '-') + '</td><td>' + (o.plan === 'instant' ? 'Instant Funding' : 'Challenge') + '</td><td>' + money(o.size) + '</td><td>' + (o.method === 'crypto' ? 'Crypto' : 'Card') + '</td><td>' + money(o.amount) + '</td><td>' + statusTag(o.status === 'paid' ? 'paid' : o.status === 'failed' ? 'rejected' : 'pending') + '</td></tr>').join('') + '</tbody></table></div>'
+      : emptyBlock('cash', 'No transactions yet', 'Your orders will be listed here after you buy an account.'));
   }
   if (page === 'help') {
     return '<h2 class="page-h">Help &amp; Support</h2><p class="page-s">Quick answers to common questions.</p><div style="max-width:760px">' +
@@ -985,12 +968,16 @@ function dashBody(page) {
 }
 
 async function loadData() {
-  data = { accounts: [], payouts: [], loaded: true, isAdmin: false };
+  data = { accounts: [], payouts: [], orders: [], loaded: true, isAdmin: false };
   if (!sb || !user) return;
   try { const r = await sb.rpc('is_admin'); data.isAdmin = r.data === true; } catch (e) {}
   try {
     const a = await sb.from('accounts').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
     if (!a.error && a.data) data.accounts = a.data;
+  } catch (e) {}
+  try {
+    const o = await sb.from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+    if (!o.error && o.data) data.orders = o.data;
   } catch (e) {}
   try {
     const p = await sb.from('payouts').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
@@ -1012,27 +999,46 @@ let coMethod = '';
 function checkoutHTML() {
   const m = pending.meta || {};
   const tiles = PAY_METHODS.map(pm => {
-    const ok = !!(pending.links || {})[pm[0]];
-    return '<button class="method' + (coMethod === pm[0] ? ' on' : '') + '" data-m="' + pm[0] + '"' + (ok ? '' : ' disabled') + ' onclick="setMethod(\'' + pm[0] + '\')"><div class="mi">' + ico(pm[3]) + '</div><b>' + pm[1] + '</b><small>' + (ok ? pm[2] : 'Coming soon') + '</small></button>';
+    const ok = methodOn(pm[0]);
+    return '<button class="method' + (coMethod === pm[0] ? ' on' : '') + '" data-m="' + pm[0] + '"' + (ok ? '' : ' disabled') + ' onclick="setMethod(\'' + pm[0] + '\')"><div class="mi">' + ico(pm[3]) + '</div><b>' + pm[1] + '</b><small>' + (ok ? pm[2] : (pm[0] === 'card' || pm[0] === 'crypto' ? 'Not available yet' : 'Coming soon')) + '</small></button>';
   }).join('');
   return '<div class="co"><div class="co-bar"><a class="logo" href="#/">' + ico('chart', 'color:var(--p)') + 'SMC<em>PROPFIRM</em></a><a class="btn btn-g btn-sm" href="#/dashboard/accounts">Dashboard</a></div>' +
     '<div class="co-wrap"><div><h1><a href="#/" onclick="history.length>1?history.back():(location.hash=\'#/\');return false" aria-label="Back">&lsaquo;</a>Payments</h1>' +
     '<div class="sec-l">Choose how to pay</div><div class="methods">' + tiles + '</div>' +
-    '<p id="coMsg" class="msg okm" style="margin-top:20px"></p></div>' +
+    '<p id="coMsg" class="msg err" style="margin-top:20px"></p></div>' +
     '<aside class="osum"><div class="hd"><h3>' + esc(pending.name) + '</h3><div>' + esc(m.label || '') + '</div><div>Account size: ' + esc(m.size || '') + '</div></div>' +
     '<div class="bd"><div class="rw"><span>1 account</span><b>' + esc(m.price || '') + '</b></div><div class="rw"><span>Trading platform</span><b>MetaTrader 5</b></div><div class="rw"><span>Daily / max loss</span><b>5% / 10%</b></div>' +
     '<div class="tot"><span>Total</span><b>' + esc(m.price || '') + '</b></div>' +
     '<label class="agree"><input type="checkbox" id="coAgree" onchange="updateCo()"><span>I agree to the <a href="#/terms" target="_blank" rel="noopener" style="color:var(--p)">Terms of Service</a>, the <a href="#/risk" target="_blank" rel="noopener" style="color:var(--p)">Risk Disclosure</a> and the challenge rules.</span></label>' +
     '<button class="btn btn-p" id="coGo" onclick="goPay()" disabled>Continue</button>' +
-    '<p class="note">Discount codes such as ' + PROMO + ' are entered on the payment page when the method supports it.</p></div></aside></div></div>';
+    '<p class="note">Discount codes such as ' + PROMO + ' are entered on the card payment page.</p></div></aside></div></div>';
 }
 function setMethod(k) { coMethod = k; document.querySelectorAll('.method').forEach(el => el.classList.toggle('on', el.dataset.m === k)); updateCo(); }
 function updateCo() { $('coGo').disabled = !(coMethod && $('coAgree').checked); }
-function goPay() {
-  const url = (pending.links || {})[coMethod];
-  if (!url) return;
-  window.open(url, '_blank', 'noopener');
-  const m = $('coMsg'); m.textContent = 'Finish your payment in the new tab. Your account is added to your dashboard after we confirm the payment.'; m.style.display = 'block';
+async function goPay() {
+  const m = $('coMsg'), btn = $('coGo');
+  m.className = 'msg err'; m.style.display = 'none';
+  if (!coMethod || !pending) return;
+  btn.disabled = true; const label = btn.textContent; btn.textContent = 'Please wait...';
+  try {
+    const { data } = await sb.auth.getSession();
+    const token = data && data.session ? data.session.access_token : '';
+    const r = await fetch(SUPABASE_URL + '/functions/v1/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + token },
+      body: JSON.stringify({ plan: pending.meta.plan, size: pending.meta.sizeNum, method: coMethod })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j.url) { location.href = j.url; return; }
+    m.textContent = j.error || 'Could not start the payment. Try again.'; m.style.display = 'block';
+  } catch (e) {
+    m.textContent = 'Could not reach the payment service. Check your connection and try again.'; m.style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = label;
+}
+function successHTML() {
+  return siteHeader() + '<div class="legal" style="text-align:center"><div class="empty"><div class="ei">' + ico('check') + '</div><h3>Thank you for your order</h3><p>We are confirming your payment. Your account appears in your dashboard as soon as it is confirmed, usually within a few minutes.</p>' +
+    '<a class="btn btn-p" href="#/dashboard/accounts">Go to my dashboard</a></div></div>' + footerHTML();
 }
 
 /* ---------- LEGAL PAGES (templates: have them reviewed by a lawyer) ---------- */
@@ -1085,6 +1091,7 @@ async function route() {
   }
   const lg = h.replace('#/', '');
   if (LEGAL[lg]) { app.innerHTML = legalHTML(lg); renderHdr(); window.scrollTo(0, 0); return; }
+  if (h.startsWith('#/payment-success')) { pending = null; app.innerHTML = successHTML(); renderHdr(); window.scrollTo(0, 0); return; }
   if (h.startsWith('#/checkout')) {
     if (!authReady) { app.innerHTML = ''; return; }
     if (!pending) { location.hash = '#/'; return; }
@@ -1169,13 +1176,13 @@ async function forgotPassword() {
 }
 async function doSignOut() {
   if (sb) await sb.auth.signOut();
-  user = null; data = { accounts: [], payouts: [], loaded: false }; ad = { accounts: [], payouts: [], loaded: false };
+  user = null; data = { accounts: [], payouts: [], orders: [], loaded: false }; ad = { accounts: [], payouts: [], loaded: false };
   location.hash = '#/'; route();
 }
 
 /* ---------- PAYMENT ---------- */
-function checkout(name, links, meta) {
-  pending = { name, links: links || {}, meta: meta || {} };
+function checkout(name, meta) {
+  pending = { name, meta: meta || {} };
   if (user) location.hash = '#/checkout'; else openAuth(true);
 }
 function openPay(name, stripe, crypto) {   // legacy popup, no longer used
