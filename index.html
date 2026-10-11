@@ -350,7 +350,7 @@ footer.site .wrap{display:flex;flex-direction:column;gap:14px}
 .cred-r b{color:var(--tx);text-align:right;word-break:break-all}
 .cp{border:1px solid var(--bd);background:#fff;border-radius:6px;font-size:.7rem;font-weight:700;padding:2px 8px;margin-left:6px;cursor:pointer;color:var(--p)}
 .cp:hover{background:var(--soft)}
-.cred-form{display:grid;grid-template-columns:repeat(4,1fr) auto auto;gap:10px;align-items:end;background:var(--bg2);padding:14px;border-radius:12px}
+.cred-form{display:grid;grid-template-columns:repeat(4,1fr) auto auto auto;gap:10px;align-items:end;background:var(--bg2);padding:14px;border-radius:12px}
 .cred-form .field{margin:0}
 @media(max-width:900px){.cred-form{grid-template-columns:1fr 1fr}}
 
@@ -800,12 +800,21 @@ function adToggle(id) { adOpen = adOpen === id ? '' : id; $('dbody').innerHTML =
 function adminCreds(id) {
   adminCall('admin_set_credentials', { p_id: id, p_platform: $('cp-' + id).value, p_login: $('cl-' + id).value, p_password: $('cw-' + id).value, p_server: $('cs-' + id).value }, 'Login details saved. The customer sees them in the dashboard.');
 }
-function adminMail(id) {
+function credMail(id) {
   const a = ad.accounts.find(x => x.id === id);
-  if (!a || !a.mt_login) { adMsg = 'Error: save the login details first.'; $('dbody').innerHTML = adminPage(); return; }
-  const to = a.owner_email || '';
-  const body = 'Hello,\n\nYour ' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + ' account (' + money(a.size) + ') is ready.\n\nPlatform: ' + (a.platform || 'MetaTrader 5') + '\nLogin: ' + a.mt_login + '\nPassword: ' + (a.mt_password || '') + '\nServer: ' + (a.mt_server || '') + '\n\nYou can also see these details in your dashboard.\n\nGood luck,\nSMC Prop Firm';
-  location.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent('Your SMC Prop Firm trading account') + '&body=' + encodeURIComponent(body);
+  if (!a || !a.mt_login) { adMsg = 'Error: save the login details first.'; $('dbody').innerHTML = adminPage(); return null; }
+  return { to: a.owner_email || '', subject: 'Your SMC Prop Firm trading account',
+    body: 'Hello,\n\nYour ' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + ' account (' + money(a.size) + ') is ready.\n\nPlatform: ' + (a.platform || 'MetaTrader 5') + '\nLogin: ' + a.mt_login + '\nPassword: ' + (a.mt_password || '') + '\nServer: ' + (a.mt_server || '') + '\n\nYou can also see these details in your dashboard.\n\nGood luck,\nSMC Prop Firm' };
+}
+function adminGmail(id) {
+  const m = credMail(id); if (!m) return;
+  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(m.to) + '&su=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(m.body), '_blank', 'noopener');
+}
+function adminCopyMsg(id, btn) {
+  const m = credMail(id); if (!m) return;
+  const t = 'To: ' + m.to + '\nSubject: ' + m.subject + '\n\n' + m.body;
+  try { navigator.clipboard.writeText(t); } catch (e) {}
+  const o = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = o; }, 1500);
 }
 function adminNext(id) { adminCall('admin_next_phase', { p_id: id }, 'Account moved to the next step.'); }
 function adminPay(id, st) { adminCall('admin_set_payout', { p_id: id, p_status: st }, 'Payout marked ' + st + '.'); }
@@ -813,7 +822,7 @@ function adminRoll() { if (confirm('Start a new trading day for all live account
 function credRow(a) {
   const f = (k, l, v, t) => '<div class="field"><label>' + l + '</label><input class="in" id="' + k + '-' + a.id + '" type="' + (t || 'text') + '" value="' + esc(v || '') + '"></div>';
   return '<tr><td colspan="7"><div class="cred-form">' + f('cp', 'Platform', a.platform || 'MetaTrader 5') + f('cl', 'Login', a.mt_login) + f('cw', 'Password', a.mt_password) + f('cs', 'Server', a.mt_server) +
-    '<button class="btn btn-p btn-sm" onclick="adminCreds(\'' + a.id + '\')">Save login</button><button class="btn btn-g btn-sm" onclick="adminMail(\'' + a.id + '\')">Email customer</button></div></td></tr>';
+    '<button class="btn btn-p btn-sm" onclick="adminCreds(\'' + a.id + '\')">Save login</button><button class="btn btn-g btn-sm" onclick="adminGmail(\'' + a.id + '\')">Open in Gmail</button><button class="btn btn-g btn-sm" onclick="adminCopyMsg(\'' + a.id + '\',this)">Copy message</button></div></td></tr>';
 }
 function adminPage() {
   const emailOf = {}; ad.accounts.forEach(a => { if (a.owner_email) emailOf[a.user_id] = a.owner_email; });
