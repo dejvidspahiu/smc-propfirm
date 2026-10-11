@@ -350,9 +350,16 @@ footer.site .wrap{display:flex;flex-direction:column;gap:14px}
 .cred-r b{color:var(--tx);text-align:right;word-break:break-all}
 .cp{border:1px solid var(--bd);background:#fff;border-radius:6px;font-size:.7rem;font-weight:700;padding:2px 8px;margin-left:6px;cursor:pointer;color:var(--p)}
 .cp:hover{background:var(--soft)}
-.cred-form{display:grid;grid-template-columns:repeat(4,1fr) auto auto auto;gap:10px;align-items:end;background:var(--bg2);padding:14px;border-radius:12px}
+.cred-form{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:10px;align-items:end;background:var(--bg2);padding:14px;border-radius:12px}
 .cred-form .field{margin:0}
 @media(max-width:900px){.cred-form{grid-template-columns:1fr 1fr}}
+
+.how{margin:8px 0 0;border:none;padding:0;background:none}
+.how summary{font-size:.78rem;font-weight:700;color:var(--p);cursor:pointer;display:block}
+.how summary::after{content:''}
+.how ol{margin:8px 0 0 18px;font-size:.8rem;color:var(--mut)}
+.how li{margin-bottom:4px}
+.mail-prev{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:10px;margin-top:12px;overflow-x:auto}
 
 @media(max-width:960px){
   .hero .wrap{grid-template-columns:1fr}
@@ -683,7 +690,9 @@ function credBlock(a) {
   return '<div class="cred"><div class="cred-h">Trading login &middot; ' + esc(a.platform || 'MetaTrader 5') + '</div>' +
     '<div class="cred-r"><span>Login</span><b>' + esc(a.mt_login) + ' <button class="cp" onclick="copyText(\'' + esc(a.mt_login) + '\',this)">Copy</button></b></div>' +
     '<div class="cred-r"><span>Password</span><b><span id="pw-' + a.id + '" data-on="0">\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022</span> <button class="cp" id="pwb-' + a.id + '" onclick="toggleCred(\'' + a.id + '\')">Show</button> <button class="cp" onclick="copyText(credMap[\'' + a.id + '\'],this)">Copy</button></b></div>' +
-    (a.mt_server ? '<div class="cred-r"><span>Server</span><b>' + esc(a.mt_server) + ' <button class="cp" onclick="copyText(\'' + esc(a.mt_server) + '\',this)">Copy</button></b></div>' : '') + '</div>';
+    (a.mt_server ? '<div class="cred-r"><span>Server</span><b>' + esc(a.mt_server) + ' <button class="cp" onclick="copyText(\'' + esc(a.mt_server) + '\',this)">Copy</button></b></div>' : '') +
+    (a.mt_leverage ? '<div class="cred-r"><span>Leverage</span><b>' + esc(a.mt_leverage) + '</b></div>' : '') +
+    '<details class="how"><summary>How to log in</summary><ol><li>Open MetaTrader 5.</li><li>Go to File, then Login to Trade Account.</li><li>Enter the Login and Password, and pick the Server above.</li><li>If the server is not in the list: File, Open an Account, search the server name, select it, then repeat step 2.</li></ol></details></div>';
 }
 function acctCard(a) {
   const x = acctStats(a);
@@ -798,31 +807,62 @@ function adminUpdate(id) { adminCall('admin_update_equity', { p_id: id, p_balanc
 let adOpen = '';
 function adToggle(id) { adOpen = adOpen === id ? '' : id; $('dbody').innerHTML = adminPage(); }
 function adminCreds(id) {
-  adminCall('admin_set_credentials', { p_id: id, p_platform: $('cp-' + id).value, p_login: $('cl-' + id).value, p_password: $('cw-' + id).value, p_server: $('cs-' + id).value }, 'Login details saved. The customer sees them in the dashboard.');
+  adminCall('admin_set_credentials', { p_id: id, p_platform: $('cp-' + id).value, p_login: $('cl-' + id).value, p_password: $('cw-' + id).value, p_server: $('cs-' + id).value, p_leverage: $('cv-' + id).value }, 'Login details saved. The customer sees them in the dashboard.');
 }
-function credMail(id) {
+function emailHTML(a) {
+  const prog = a.plan === 'instant' ? 'Instant Funding' : 'Challenge';
+  const row = (l, v) => '<tr><td style="padding:14px 0;border-bottom:1px solid #eee9fb;font-weight:700;color:#1a1433;width:42%">' + l + '</td><td style="padding:14px 0;border-bottom:1px solid #eee9fb;color:#1a1433">' + esc(v) + '</td></tr>';
+  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;background:#ffffff;color:#1a1433">' +
+    '<div style="background:#7c4dff;color:#ffffff;padding:22px 28px;font-size:20px;font-weight:800;letter-spacing:.5px">SMC PROPFIRM</div>' +
+    '<div style="padding:28px">' +
+    '<h1 style="font-size:26px;margin:0 0 6px">' + prog + ' Account Details</h1>' +
+    '<p style="margin:0 0 18px;color:#6a6490;font-size:14px">Your trading account is ready. Keep these details private.</p>' +
+    '<table style="width:100%;border-collapse:collapse;font-size:15px">' +
+    row('Account ID', a.mt_login) + row('Password', a.mt_password || '') + row('Balance', money(a.size)) +
+    (a.mt_leverage ? row('Leverage', a.mt_leverage) : '') + row('Server', a.mt_server || '') + row('Platform', a.platform || 'MetaTrader 5') +
+    '</table>' +
+    '<div style="margin-top:26px;background:#f6f3ff;border-radius:10px;padding:18px 20px;font-size:14px;line-height:1.6">' +
+    '<div style="font-weight:800;font-size:16px;margin-bottom:6px">Important to know</div>' +
+    '<p style="margin:0 0 8px">It is possible that the server &quot;' + esc(a.mt_server || '') + '&quot; does not appear in your server list. To make it appear:</p>' +
+    '<ol style="margin:0 0 8px 20px;padding:0"><li>In MetaTrader 5 go to File, then Open an Account.</li><li>Search for &quot;' + esc(a.mt_server || '') + '&quot; and select it.</li><li>Then go to File, Login to Trade Account and enter your Account ID and Password.</li></ol>' +
+    '<p style="margin:0">If the server is still not visible, repeat the steps above.</p></div>' +
+    '<p style="margin:22px 0 0;font-size:13px;color:#6a6490">You can also see these details in your dashboard. Trading takes place in a simulated environment. Good luck!</p>' +
+    '</div></div>';
+}
+function emailText(a) {
+  return (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + ' Account Details\n\nAccount ID: ' + a.mt_login + '\nPassword: ' + (a.mt_password || '') + '\nBalance: ' + money(a.size) + (a.mt_leverage ? '\nLeverage: ' + a.mt_leverage : '') + '\nServer: ' + (a.mt_server || '') + '\nPlatform: ' + (a.platform || 'MetaTrader 5');
+}
+function credAcct(id) {
   const a = ad.accounts.find(x => x.id === id);
   if (!a || !a.mt_login) { adMsg = 'Error: save the login details first.'; $('dbody').innerHTML = adminPage(); return null; }
-  return { to: a.owner_email || '', subject: 'Your SMC Prop Firm trading account',
-    body: 'Hello,\n\nYour ' + (a.plan === 'instant' ? 'Instant Funding' : 'Challenge') + ' account (' + money(a.size) + ') is ready.\n\nPlatform: ' + (a.platform || 'MetaTrader 5') + '\nLogin: ' + a.mt_login + '\nPassword: ' + (a.mt_password || '') + '\nServer: ' + (a.mt_server || '') + '\n\nYou can also see these details in your dashboard.\n\nGood luck,\nSMC Prop Firm' };
+  return a;
 }
-function adminGmail(id) {
-  const m = credMail(id); if (!m) return;
-  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(m.to) + '&su=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(m.body), '_blank', 'noopener');
+async function adminSendMail(id) {
+  const a = credAcct(id); if (!a) return;
+  const html = emailHTML(a), text = emailText(a);
+  let ok = false;
+  try { await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]); ok = true; } catch (e) {}
+  if (!ok) {
+    const d = document.createElement('div'); d.innerHTML = html; d.style.cssText = 'position:fixed;left:-9999px;top:0'; document.body.appendChild(d);
+    const r = document.createRange(); r.selectNodeContents(d); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    try { ok = document.execCommand('copy'); } catch (e) {} sel.removeAllRanges(); d.remove();
+  }
+  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(a.owner_email || '') + '&su=' + encodeURIComponent('Your SMC Prop Firm trading account'), '_blank', 'noopener');
+  adMsg = ok ? 'Email copied. In the Gmail window click in the message and press Ctrl+V, then Send.' : 'Error: could not copy. Use Preview and select the email by hand.';
+  $('dbody').innerHTML = adminPage();
 }
-function adminCopyMsg(id, btn) {
-  const m = credMail(id); if (!m) return;
-  const t = 'To: ' + m.to + '\nSubject: ' + m.subject + '\n\n' + m.body;
-  try { navigator.clipboard.writeText(t); } catch (e) {}
-  const o = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = o; }, 1500);
+function adminPreview(id) {
+  const a = credAcct(id); if (!a) return;
+  const el = $('prev-' + id); el.style.display = el.style.display === 'block' ? 'none' : 'block';
+  if (el.style.display === 'block') el.innerHTML = emailHTML(a);
 }
 function adminNext(id) { adminCall('admin_next_phase', { p_id: id }, 'Account moved to the next step.'); }
 function adminPay(id, st) { adminCall('admin_set_payout', { p_id: id, p_status: st }, 'Payout marked ' + st + '.'); }
 function adminRoll() { if (confirm('Start a new trading day for all live accounts?')) adminCall('admin_roll_day', {}, 'New trading day started.'); }
 function credRow(a) {
   const f = (k, l, v, t) => '<div class="field"><label>' + l + '</label><input class="in" id="' + k + '-' + a.id + '" type="' + (t || 'text') + '" value="' + esc(v || '') + '"></div>';
-  return '<tr><td colspan="7"><div class="cred-form">' + f('cp', 'Platform', a.platform || 'MetaTrader 5') + f('cl', 'Login', a.mt_login) + f('cw', 'Password', a.mt_password) + f('cs', 'Server', a.mt_server) +
-    '<button class="btn btn-p btn-sm" onclick="adminCreds(\'' + a.id + '\')">Save login</button><button class="btn btn-g btn-sm" onclick="adminGmail(\'' + a.id + '\')">Open in Gmail</button><button class="btn btn-g btn-sm" onclick="adminCopyMsg(\'' + a.id + '\',this)">Copy message</button></div></td></tr>';
+  return '<tr><td colspan="7"><div class="cred-form">' + f('cp', 'Platform', a.platform || 'MetaTrader 5') + f('cl', 'Login', a.mt_login) + f('cw', 'Password', a.mt_password) + f('cs', 'Server', a.mt_server) + f('cv', 'Leverage', a.mt_leverage) +
+    '<button class="btn btn-g btn-sm" onclick="adminCreds(\'' + a.id + '\')">Save login</button></div><div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-p btn-sm" onclick="adminSendMail(\'' + a.id + '\')">Copy email &amp; open Gmail</button><button class="btn btn-g btn-sm" onclick="adminPreview(\'' + a.id + '\')">Preview email</button></div><div class="mail-prev" id="prev-' + a.id + '" style="display:none"></div></td></tr>';
 }
 function adminPage() {
   const emailOf = {}; ad.accounts.forEach(a => { if (a.owner_email) emailOf[a.user_id] = a.owner_email; });
